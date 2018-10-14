@@ -1,0 +1,6 @@
+# Object files
+!.gitignore
+*.o
+*.ko
+*.obj
+*.elf

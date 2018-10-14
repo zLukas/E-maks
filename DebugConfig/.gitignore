@@ -1,0 +1,6 @@
+!.gitignore
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.dbgc
