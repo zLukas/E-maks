@@ -1,0 +1,5 @@
+1) uart, spi  tests
+2) adc tests
+2) check again i2c bus
+3) read NRF and RFM devices datasheets
+4) can initialization
