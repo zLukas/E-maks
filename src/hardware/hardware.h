@@ -1,6 +1,7 @@
 #ifndef _HARDWARE_H_
 #define _HARDWARE_H_
 
+#include <stm32f10x.h>
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_tim.h>
@@ -10,38 +11,42 @@
 #include <stm32f10x_usart.h>
 #include <stm32f10x_can.h>
 #include <stm32f10x_i2c.h>
+#include <stm32f10x_tim.h>
+#include <misc.h>
+
+#include	"adc.h"
 
 
 
 
-#define DIO0						GPIO_Pin_0		//IO
-#define DIO0_PORT				GPIOA					//IO
+#define DIO0						GPIO_Pin_0		//IO not connected
+#define DIO0_PORT				GPIOA					//IO not connected
 
-#define	DIO1						GPIO_Pin_3	//out
-#define DIO2						GPIO_Pin_2	//out
-#define DIO3						GPIO_Pin_1	//out
-#define DIO4						GPIO_Pin_0	//out
+#define	DIO1						GPIO_Pin_3	//out	not connected
+#define DIO2						GPIO_Pin_2	//out not connected
+#define DIO3						GPIO_Pin_1	//out not connected
+#define DIO4						GPIO_Pin_0	//out not connected
 #define DIO14_PORT			GPIOC
 
-#define DIO5						GPIO_Pin_5	//in
+#define DIO5						GPIO_Pin_5	//in not connected
 #define DIO5_PORT				GPIOB
 
-#define	DC							GPIO_Pin_12		//in
+#define	DC							GPIO_Pin_12		//in not connected
 #define	DC_PORT					GPIOA
 
-#define RFM_RES					GPIO_Pin_1		//out
+#define RFM_RES					GPIO_Pin_1		//out not connected
 #define	RFM_RES_PORT		GPIOA
 
-#define	RFM_CS					GPIO_Pin_6		//out
+#define	RFM_CS					GPIO_Pin_6		//out 
 #define RFM_CS_PORT			GPIOC
 
-#define	NRF_CS					GPIO_Pin_7		//out
-#define NRF_IRQ					GPIO_Pin_8		
-#define NRF_CE					GPIO_Pin_9
-#define NRF_PORT				GPIOC
+#define	NRF_CS					GPIO_Pin_7		//out not connected
+#define NRF_IRQ					GPIO_Pin_8		//	not connected
+#define NRF_CE					GPIO_Pin_9		//	not connected
+#define NRF_PORT				GPIOC					//	not connected
 
 
-#define	SCREEN_RES			GPIO_Pin_11		//out
+#define	SCREEN_RES			GPIO_Pin_11		//out	//	not connected
 #define SCREEN_RES_PORT	GPIOA
 
 #define	UART1_TX				GPIO_Pin_9			//af_PP
@@ -61,8 +66,8 @@
 #define VBAT						GPIO_Pin_4			//adc
 #define	VBAT_PORT				GPIOC
 
-#define	OSC_IN					GPIO_Pin_0			//out ?
-#define	OSC_OUT					GPIO_Pin1				//in  ?
+#define	OSC_IN					GPIO_Pin_0			//out ?	//	not connected
+#define	OSC_OUT					GPIO_Pin1				//in  ?	//	not connected
 #define OSC_PORT				GPIOD
 
 #define	BUTTON1					GPIO_Pin_5

@@ -4,6 +4,7 @@
 #include "hardware.h"
 #include <stm32f10x_adc.h>
 
+#define ADC_CHANNELS  4
 
 
 #endif

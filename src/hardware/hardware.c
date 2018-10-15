@@ -2,7 +2,12 @@
 
 
 GPIO_InitTypeDef gpio;
-ADC_InitTypeDef adc; 
+DMA_InitTypeDef dma;
+TIM_TimeBaseInitTypeDef tim;
+TIM_OCInitTypeDef channel;
+NVIC_InitTypeDef nvic;
+extern ADC_InitTypeDef adc;
+extern int adcValues[];
 
 /* RCC initialization
 	- peripethial clocks setups
@@ -114,10 +119,42 @@ void gpioInit(void)
 		
 }
 void dmaInit(void)
-{}
+{
+	DMA_StructInit(&dma);
+	dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+	dma.DMA_MemoryBaseAddr = (uint32_t)adcValues;
+	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+	dma.DMA_DIR = DMA_DIR_PeripheralSRC;
+	dma.DMA_BufferSize = ADC_CHANNELS;
+	dma.DMA_Mode = DMA_Mode_Circular;
+	DMA_Init(DMA1_Channel1, &dma);
+	DMA_Cmd(DMA1_Channel1, ENABLE);
+}
 	
 void tim4Init(void)
-{}
+{
+	TIM_TimeBaseStructInit(&tim);
+	tim.TIM_CounterMode = TIM_CounterMode_Up;
+	tim.TIM_Prescaler =64-1;   //1 MHZ
+	tim.TIM_Period = 1000-1;		//1kHz 
+	TIM_TimeBaseInit(TIM4, &tim);
+
+	TIM_OCStructInit(&channel);
+	channel.TIM_OCMode = TIM_OCMode_PWM1;
+	channel.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OC1Init(TIM4, &channel);
+	TIM_OC2Init(TIM4, &channel);
+	TIM_Cmd(TIM4, ENABLE);
+}
 	
 void nvicInit (void)
-{}
+{
+	nvic.NVIC_IRQChannel = TIM4_IRQn;
+	nvic.NVIC_IRQChannelPreemptionPriority = 0;
+	nvic.NVIC_IRQChannelSubPriority = 0;
+	nvic.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&nvic);
+}
