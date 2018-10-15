@@ -1,6 +1,5 @@
+# Object files
+*
+*/
 !.gitignore
-*.dSYM/
-*.su
-*.idb
-*.pdb
-*.dbgc
+
