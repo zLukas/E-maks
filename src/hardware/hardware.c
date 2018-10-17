@@ -9,29 +9,14 @@ NVIC_InitTypeDef nvic;
 extern ADC_InitTypeDef adc;
 extern int adcValues[];
 
-/* RCC initialization
-	- peripethial clocks setups
-*/
-
-void rccInit(void)
-{
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
-	RCC_ADCCLKConfig(RCC_PCLK2_Div6);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
- 
-	SysTick_Config(SystemCoreClock / 1000);
-}
-
 /* gpioInit
-	- pinout configuration
+	- Pinout configuration
 */
 void gpioInit(void)
 {
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	
 	GPIO_StructInit(&gpio);	
 	
 	gpio.GPIO_Pin = DIO0;
@@ -118,8 +103,13 @@ void gpioInit(void)
 	GPIO_Init(SPI2_PORT,&gpio);
 		
 }
+/* dmaInit
+	- DMA  configuration
+*/
 void dmaInit(void)
 {
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	
 	DMA_StructInit(&dma);
 	dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
 	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
@@ -134,8 +124,13 @@ void dmaInit(void)
 	DMA_Cmd(DMA1_Channel1, ENABLE);
 }
 	
+/* dmaInit
+	- Timer configuration
+*/
 void tim4Init(void)
 {
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
+	
 	TIM_TimeBaseStructInit(&tim);
 	tim.TIM_CounterMode = TIM_CounterMode_Up;
 	tim.TIM_Prescaler =64-1;   //1 MHZ
@@ -149,9 +144,14 @@ void tim4Init(void)
 	TIM_OC2Init(TIM4, &channel);
 	TIM_Cmd(TIM4, ENABLE);
 }
-	
+
+/* dmaInit
+	-Timer event configuration
+*/
 void nvicInit (void)
 {
+	
+	
 	nvic.NVIC_IRQChannel = TIM4_IRQn;
 	nvic.NVIC_IRQChannelPreemptionPriority = 0;
 	nvic.NVIC_IRQChannelSubPriority = 0;

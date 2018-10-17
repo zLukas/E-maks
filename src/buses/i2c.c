@@ -3,6 +3,23 @@
 
 I2C_InitTypeDef i2c;
 
+
+/* i2cInit
+	-i2C bus Initialization 
+*/
+void i2cInit(void)
+{	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+	
+	I2C_StructInit(&i2c);
+	i2c.I2C_Mode = I2C_Mode_I2C;
+	i2c.I2C_ClockSpeed = 100000;
+	I2C_Init(I2C1, &i2c);
+	I2C_Cmd(I2C1, ENABLE);
+} 
+/* i2c findAddress
+	-pairing with  i2c slave 
+*/
 uint8_t findAddress(uint32_t deviceAddress)
 {
 	uint8_t addressSet = 0;
@@ -15,17 +32,10 @@ uint8_t findAddress(uint32_t deviceAddress)
 	
 	return addressSet;
 }
-
-void i2cInit(void)
-{
-	I2C_StructInit(&i2c);
-	i2c.I2C_Mode = I2C_Mode_I2C;
-	i2c.I2C_ClockSpeed = 100000;
-	I2C_Init(I2C1, &i2c);
-	I2C_Cmd(I2C1, ENABLE);
-} 
-
-void setDeviceMemeoryAddress(uint32_t DeviceMemoryAddress)
+/* i2c setRegiste
+	-setting the slave device memeory register to write data
+*/
+void setRegister(uint32_t DeviceMemoryAddress)
 {
 	I2C_GenerateSTART(I2C1, ENABLE);
 	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
@@ -36,14 +46,15 @@ void setDeviceMemeoryAddress(uint32_t DeviceMemoryAddress)
 	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
 }
 	
-
-
+/* i2cSend
+	-Sending data to other devices
+*/
 void i2cSend(uint32_t deviceMemoryAddress , const void* data, int size)
 {
 	  int i;
  const uint8_t* buffer = (uint8_t*)data;
  
- setDeviceMemeoryAddress(deviceMemoryAddress);
+	setRegister(deviceMemoryAddress);
  for (i = 0; i < size; i++) {
  I2C_SendData(I2C1, buffer[i]);
  while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
@@ -58,7 +69,7 @@ int i2cReveive( uint32_t deviceMemoryAddress , const void* data, int size)
 	 int i;
 	uint8_t* buffer = (uint8_t*)data;
  
-	setDeviceMemeoryAddress(DEVICE_ADDRESS);
+	setRegister(DEVICE_ADDRESS);
  
 	I2C_GenerateSTART(I2C1, ENABLE);
 	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);

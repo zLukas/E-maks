@@ -17,8 +17,6 @@
 #include	"adc.h"
 
 
-
-
 #define DIO0						GPIO_Pin_0		//IO not connected
 #define DIO0_PORT				GPIOA					//IO not connected
 
@@ -93,7 +91,7 @@
 #define SPI2_PORT				GPIOB
 
 
-void rccInit(void);
+
 void gpioInit(void);
 void dmaInit(void);
 void tim4Init(void);

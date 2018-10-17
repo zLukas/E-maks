@@ -2,8 +2,13 @@
 
 SPI_InitTypeDef spi;
 
+/* spiInit
+	-spi bus initialization
+*/
 void spiInit(void)
 {
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+	
 	SPI_StructInit(&spi);
 	spi.SPI_Mode = SPI_Mode_Master;
 	spi.SPI_NSS = SPI_NSS_Soft;
@@ -13,7 +18,10 @@ void spiInit(void)
 	SPI_Cmd(SPI1, ENABLE);
 }
 
-uint8_t spi_sendrecv(uint8_t byte)
+/* spisendReceive
+	-sending then receiving function
+*/
+uint8_t spiSendReceive(uint8_t byte)
 {
  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
  SPI_I2S_SendData(SPI2, byte);

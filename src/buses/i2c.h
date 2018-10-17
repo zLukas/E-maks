@@ -10,7 +10,7 @@
 
 void i2cInit(void);
 uint8_t findAddress(uint32_t deviceAddress);
-void setDeviceMemoryAddress(uint32_t DeviceMemoryAddress);
+void setRegister(uint32_t DeviceMemoryAddress);
 void i2cSend(uint32_t deviceMemoryAddress , const void* data, int size);
 int i2cReveive( uint32_t deviceMemoryAddress , const void* data, int size);
 #endif

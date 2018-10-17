@@ -2,27 +2,38 @@
 
 USART_InitTypeDef uart;
 
-
+/* uartINit
+	-USARTx configuration 
+*/
 void uart1init(USART_TypeDef *usartx )
 {
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 	USART_StructInit(&uart);
 	uart.USART_BaudRate = 115200;
 	USART_Init(usartx, &uart);
 	USART_Cmd(usartx, ENABLE);
 }
 
+/* sendChar
+	- basic data sending function
+*/
 void sendChar(char c, USART_TypeDef *usartx)
 {
  while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
  USART_SendData(usartx, c);
 }
- 
+ /* sendString
+	-complex data sending function 
+*/
 void sendString(const char* s, USART_TypeDef *usartx)
 {
  while (*s)
  sendChar(*s++, usartx);
 }
-
+/* sendString
+	-complex data sending function 
+*/
 char uartReceive(USART_TypeDef *usartx)
 {
 	char c;

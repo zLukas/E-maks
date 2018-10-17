@@ -3,9 +3,14 @@
 int adcValues[ADC_CHANNELS];
 
 ADC_InitTypeDef adc;
-
+/* gpioInit
+	-ADC and 4  ADC channels configuration 
+*/
 void adcInit(void)
 {
+	 RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+	 RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+ 
 	ADC_StructInit(&adc);
 	adc.ADC_ScanConvMode = ENABLE;
 	adc.ADC_ContinuousConvMode = ENABLE;

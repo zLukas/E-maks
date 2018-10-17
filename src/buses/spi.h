@@ -7,6 +7,6 @@
 
 
 void spiInit(void);
-uint8_t spi_sendrecv(uint8_t byte);
+uint8_t spiSendReceive(uint8_t byte);
  
 #endif
