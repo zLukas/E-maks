@@ -1,5 +1,11 @@
 #include "i2c.h"
 
+/*
+	additional universal i2c functions just in case
+*/
+
+
+
 
 I2C_InitTypeDef i2c;
 

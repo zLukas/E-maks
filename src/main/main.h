@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <hardware.h>
+#include "oledMain.h"
+
 
 
 int main(void);

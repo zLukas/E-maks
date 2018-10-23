@@ -16,6 +16,7 @@ void gpioInit(void)
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	SysTick_Config(SystemCoreClock / 1000);
 	
 	GPIO_StructInit(&gpio);	
 	
@@ -89,10 +90,6 @@ void gpioInit(void)
 	gpio.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(BLK_PORT,&gpio);
 */
-	gpio.GPIO_Pin = I2C1_SCL | I2C1_SDA;
-	gpio.GPIO_Mode = GPIO_Mode_AF_OD;
-	gpio.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(I2C1_PORT,&gpio);
 		
 	gpio.GPIO_Pin = SPI2_SCK | SPI2_MOSI;
 	gpio.GPIO_Mode = GPIO_Mode_AF_PP;
@@ -101,6 +98,10 @@ void gpioInit(void)
 	gpio.GPIO_Pin = SPI2_MISO;
 	gpio.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(SPI2_PORT,&gpio);
+	
+	gpio.GPIO_Pin = TEST_LED;
+	gpio.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(TEST_LED_PORT, &gpio);
 		
 }
 /* dmaInit
