@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\StdPeriph\inc;.\CMSIS\CoreSupport;.\CMSIS\DeviceSupport\ST\STM32F10x;.\src\buses;.\src\hardware;.\src\main</IncludePath>
+              <IncludePath>.\StdPeriph\inc;.\CMSIS\CoreSupport;.\CMSIS\DeviceSupport\ST\STM32F10x;.\src\buses;.\src\hardware;.\src\main;.\ExternLibraries\Oled\delay;.\ExternLibraries\Oled\IIC;.\ExternLibraries\Oled\SPI;.\ExternLibraries\Oled\SSD1306;.\ExternLibraries\Oled\usher;.\src\adc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -388,15 +388,82 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>buses</GroupName>
-        </Group>
-        <Group>
           <GroupName>hardware</GroupName>
           <Files>
             <File>
               <FileName>hardware.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\hardware\hardware.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>adc</GroupName>
+          <Files>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\adc\adc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>buses</GroupName>
+          <Files>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\buses\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\buses\spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\buses\uart.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>oledSSD1306</GroupName>
+          <Files>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\delay\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>IIC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\IIC\IIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>SSD1306.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\SSD1306\SSD1306.c</FilePath>
+            </File>
+            <File>
+              <FileName>Fonts.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\SSD1306\Fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>Config.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\usher\Config.c</FilePath>
+            </File>
+            <File>
+              <FileName>oledMain.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\usher\oledMain.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternLibraries\Oled\usher\stm32f10x_it.c</FilePath>
             </File>
           </Files>
         </Group>

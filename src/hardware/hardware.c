@@ -85,11 +85,11 @@ void gpioInit(void)
 	gpio.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(BUTTON2_6_PORT,&gpio);
 	
-/*
+
 	gpio.GPIO_Pin = BLK;
-	gpio.GPIO_Mode = GPIO_Mode_AIN;
+	gpio.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(BLK_PORT,&gpio);
-*/
+
 		
 	gpio.GPIO_Pin = SPI2_SCK | SPI2_MOSI;
 	gpio.GPIO_Mode = GPIO_Mode_AF_PP;

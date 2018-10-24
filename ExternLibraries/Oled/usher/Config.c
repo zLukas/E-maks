@@ -116,12 +116,12 @@ static void port_init(void)
 	tGPIO.GPIO_Pin = SSD1306_CS_PIN;     // CS				 
 	tGPIO.GPIO_Speed = GPIO_Speed_50MHz;
 	tGPIO.GPIO_Mode = GPIO_Mode_Out_PP;	
-	GPIO_Init(GPIOB, &tGPIO);
+	GPIO_Init(BLK_PORT, &tGPIO);
 	
 	tGPIO.GPIO_Pin = SSD1306_RES_PIN | SSD1306_DC_PIN;     // RES D/C 				 
 	tGPIO.GPIO_Speed = GPIO_Speed_50MHz;
 	tGPIO.GPIO_Mode = GPIO_Mode_Out_PP;	
-	GPIO_Init(GPIOC, &tGPIO);
+	GPIO_Init(OLED_RES_PORT, &tGPIO);
 	
 	
 	/*----------------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ static void port_init(void)
 	tGPIO.GPIO_Pin = IIC_SCL_PIN | IIC_SDA_PIN;
 	tGPIO.GPIO_Mode = GPIO_Mode_Out_PP; //GPIO_Mode_Out_PP
 	tGPIO.GPIO_Speed = GPIO_Speed_2MHz;
-	GPIO_Init(GPIOB, &tGPIO);
+	GPIO_Init(I2C1_PORT, &tGPIO);
 #endif
 	/*----------------------------------------------------------------------------------*/
 }

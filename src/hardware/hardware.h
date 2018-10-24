@@ -32,12 +32,6 @@
 #define DIO5						GPIO_Pin_5	//in out not connected 
 #define DIO5_PORT				GPIOB
 
-#define	DC							GPIO_Pin_12		//in komendy/data wyslwietlacza
-#define	DC_PORT					GPIOA
-
-#define RFM_RES					GPIO_Pin_1		//out pwm? podswietlenie
-#define	RFM_RES_PORT		GPIOA
-
 #define	RFM_CS					GPIO_Pin_6		// spi CS
 #define RFM_CS_PORT			GPIOC
 
@@ -84,11 +78,20 @@
 - LIB_Config.h
 - IIC.c
 
-tutaj zpodmieniono tylko piny pod plytke pilota
+w pliku LIB_COnfig podmieniono tylko piny
 */
 #define I2C1_SCL					GPIO_Pin_6	//AF_OD;
 #define	I2C1_SDA					GPIO_Pin_7	//AF_OD;
 #define I2C1_PORT					GPIOB
+
+#define	OLED_DC							GPIO_Pin_12		//in komendy/data wyslwietlacza
+#define	OLED_DC_PORT				GPIOA
+#define	OLED_RES						GPIO_Pin_11			//out		reset  high pullup 
+#define OLED_RES_PORT				GPIOA
+
+
+#define RFM_RES					GPIO_Pin_1		//out pwm? podswietlenie
+#define	RFM_RES_PORT		GPIOA
 
 #define	SPI2_SCK				GPIO_Pin_13	 //AF-PP
 #define	SPI2_MISO				GPIO_Pin_14	 //floating

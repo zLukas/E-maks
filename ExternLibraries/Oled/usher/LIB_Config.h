@@ -46,6 +46,7 @@
 //SSD1306
 #include "SSD1306.h"
 #include "Fonts.h"
+#include "hardware.h"
 
 //#define SH1106
 #define SSD1306
@@ -53,17 +54,17 @@
 
 #define INTERFACE_IIC         //I2C
 
-#define SSD1306_CS_PIN          GPIO_Pin_12
-#define SSD1306_CLK_PIN         GPIO_Pin_13
-#define SSD1306_DIN_PIN         GPIO_Pin_15
-#define SSD1306_RES_PIN         GPIO_Pin_2
-#define SSD1306_DC_PIN          GPIO_Pin_6
+#define SSD1306_CS_PIN          BLK
+#define SSD1306_CLK_PIN         I2C1_SCK
+#define SSD1306_DIN_PIN         I2C1_SDA
+#define SSD1306_RES_PIN         OLED_RES
+#define SSD1306_DC_PIN          OLED_DC
 
-#define SSD1306_CS_GPIO         GPIOB
-#define SSD1306_CLK_GPIO        GPIOB
-#define SSD1306_DIN_GPIO        GPIOB
-#define SSD1306_RES_GPIO        GPIOC
-#define SSD1306_DC_GPIO         GPIOC 
+#define SSD1306_CS_GPIO         BLK_PORT
+#define SSD1306_CLK_GPIO        I2C1_PORT
+#define SSD1306_DIN_GPIO        I2C1_PORT
+#define SSD1306_RES_GPIO        OLED_RES_PORT
+#define SSD1306_DC_GPIO         OLED_DC_PORT
 
 #define __SSD1306_CS_SET()      GPIO_WriteBit(SSD1306_CS_GPIO, SSD1306_CS_PIN, Bit_SET)
 #define __SSD1306_CS_CLR()      GPIO_WriteBit(SSD1306_CS_GPIO, SSD1306_CS_PIN, Bit_RESET)

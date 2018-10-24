@@ -9,7 +9,7 @@ void testLed(void)
 {
 	
 	GPIO_SetBits( TEST_LED_PORT, TEST_LED);
-	delayMs(500);
+	delayMs(100);
 	GPIO_ResetBits( TEST_LED_PORT, TEST_LED);
 	delayMs(500);
 
@@ -18,6 +18,11 @@ void testLed(void)
 
 int main()
 {
+	void gpioInit(void);
+	void dmaInit(void);
+	void tim4Init(void);
+	void nvicInit (void);
+	
 	oledSample();
 	while(1)
 	{
