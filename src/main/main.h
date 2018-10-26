@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <hardware.h>
 #include "oledMain.h"
+#include "i2c.h"
+
 
 
 

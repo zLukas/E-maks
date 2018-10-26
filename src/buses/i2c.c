@@ -1,4 +1,5 @@
 #include "i2c.h"
+#include "LIB_Config.h"
 
 /*
 	additional universal i2c functions just in case
@@ -6,12 +7,11 @@
 
 
 
-
 I2C_InitTypeDef i2c;
-
 
 /* i2cInit
 	-i2C bus Initialization 
+	additional universal i2c functions just in case
 */
 void i2cInit(void)
 {	
@@ -23,76 +23,58 @@ void i2cInit(void)
 	I2C_Init(I2C1, &i2c);
 	I2C_Cmd(I2C1, ENABLE);
 } 
-/* i2c findAddress
-	-pairing with  i2c slave 
-*/
-uint8_t findAddress(uint32_t deviceAddress)
-{
-	uint8_t addressSet = 0;
-	uint32_t addressReceived;
-	i2cReveive(DEVICE_MEMORY_ADDRESS,&addressReceived, sizeof(addressReceived));
-	if ( addressReceived== deviceAddress)
-		{ addressSet = 1;}
-	else
-	{addressSet = 0;}
-	
-	return addressSet;
-}
-/* i2c setRegiste
-	-setting the slave device memeory register to write data
-*/
-void setRegister(uint32_t DeviceMemoryAddress)
-{
-	I2C_GenerateSTART(I2C1, ENABLE);
-	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
-	I2C_Send7bitAddress(I2C1, DEVICE_ADDRESS, I2C_Direction_Transmitter);
-	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
- 
-	I2C_SendData(I2C1, DeviceMemoryAddress);
-	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
-}
-	
-/* i2cSend
-	-Sending data to other devices
-*/
-void i2cSend(uint32_t deviceMemoryAddress , const void* data, int size)
-{
-	  int i;
- const uint8_t* buffer = (uint8_t*)data;
- 
-	setRegister(deviceMemoryAddress);
- for (i = 0; i < size; i++) {
- I2C_SendData(I2C1, buffer[i]);
- while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
- }
- I2C_GenerateSTOP(I2C1, ENABLE);
-	
-}	
 
-// do konfiguracji
-int i2cReveive( uint32_t deviceMemoryAddress , const void* data, int size)
+
+
+
+
+/*
+	oledWriteLine.
+	based on Waveshare oled Library, function used are in file 'SSD1306.c
+*/
+
+void oledWriteLine(uint8_t *textToWrite,uint8_t line )
 {
-	 int i;
-	uint8_t* buffer = (uint8_t*)data;
- 
-	setRegister(DEVICE_ADDRESS);
- 
-	I2C_GenerateSTART(I2C1, ENABLE);
-	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
- 
-	I2C_AcknowledgeConfig(I2C1, ENABLE);
-	I2C_Send7bitAddress(I2C1, DEVICE_ADDRESS, I2C_Direction_Receiver);
-	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED) != SUCCESS);
- 
-	for (i = 0; i < size - 1; i++) 
-	{
-		 while(I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED) != SUCCESS);
-     buffer[i] = I2C_ReceiveData(I2C1);
-	}
- I2C_AcknowledgeConfig(I2C1, DISABLE);
-    I2C_GenerateSTOP(I2C1, ENABLE);
-    while(I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED) != SUCCESS);
-    buffer[i] = I2C_ReceiveData(I2C1);
-	return (int)buffer;
+		
+		if(line == 1)
+		{
+			ssd1306_display_string(2, 0, textToWrite, 14, 1);
+		}
+		else if(line == 2)
+		{
+			ssd1306_display_string(2, 16, textToWrite, 14, 1);
+		}
+		else if (line == 3)
+		{
+			ssd1306_display_string(2, 32, textToWrite, 14, 1);
+		}		
+		else if (line == 4)
+		{
+			ssd1306_display_string(2, 48, textToWrite, 14, 1);
+		}
+		ssd1306_refresh_gram();
+}
+
+void oledShowParameters(uint16_t *kartBattery, uint16_t *kartSpeed, uint816_t *wheels, uint16_t *rcBattery)
+{
+	char ks = "v kart: " && kartSpeed;
+	char kb = "bat.kart: "&& kartBattery;
+	char wh = "kola: "&& wheels;
+	char rb	= "bar. RC: "&& rcBattery;
 	
+	
+	
+	ssd1306_clear_screen(0xFF);
+	delay_ms(100);
+	ssd1306_clear_screen(0x00);
+	/*
+	ssd1306_display_string(Xpos, Ypos, string , definiuje czcionke 12 mala 16 duza, nie wiem co robi )
+	*/
+	ssd1306_display_string(2, 0, ks, 14, 1);
+	ssd1306_display_string(2, 16, wh, 14, 1);
+	ssd1306_display_string(2, 32, kb, 14, 1);
+	ssd1306_display_string(2, 32, rb, 14, 1);
+	ssd1306_refresh_gram();
+	
+
 }
