@@ -7,6 +7,15 @@
 
 
 
+/*
+	oled variables
+*/
+
+char kartSpeed[20];
+char kartBattery[20];
+char wheelsAngle[20];
+char rcBattery[20];
+
 I2C_InitTypeDef i2c;
 
 /* i2cInit
@@ -24,57 +33,26 @@ void i2cInit(void)
 	I2C_Cmd(I2C1, ENABLE);
 } 
 
-
-
-
-
 /*
-	oledWriteLine.
-	based on Waveshare oled Library, function used are in file 'SSD1306.c
+	funkcja wyswietlajaca bazujaca na bibliotece OLED
+	na bazie funcji oledSample z oledMain.c
+	
 */
-
-void oledWriteLine(uint8_t *textToWrite,uint8_t line )
+void oledShowParameters(float kartBatt, float kartSpd, float wheels, float rcBatt)
 {
-		
-		if(line == 1)
-		{
-			ssd1306_display_string(2, 0, textToWrite, 14, 1);
-		}
-		else if(line == 2)
-		{
-			ssd1306_display_string(2, 16, textToWrite, 14, 1);
-		}
-		else if (line == 3)
-		{
-			ssd1306_display_string(2, 32, textToWrite, 14, 1);
-		}		
-		else if (line == 4)
-		{
-			ssd1306_display_string(2, 48, textToWrite, 14, 1);
-		}
-		ssd1306_refresh_gram();
-}
-
-void oledShowParameters(uint16_t *kartBattery, uint16_t *kartSpeed, uint816_t *wheels, uint16_t *rcBattery)
-{
-	char ks = "v kart: " && kartSpeed;
-	char kb = "bat.kart: "&& kartBattery;
-	char wh = "kola: "&& wheels;
-	char rb	= "bar. RC: "&& rcBattery;
-	
-	
-	
-	ssd1306_clear_screen(0xFF);
-	delay_ms(100);
-	ssd1306_clear_screen(0x00);
 	/*
-	ssd1306_display_string(Xpos, Ypos, string , definiuje czcionke 12 mala 16 duza, nie wiem co robi )
+		sprintf(tablica char, "jakis statyczny text i %f %d", watorsc do wstawienia pod %f, wartosc do wstawienia pod d)
 	*/
-	ssd1306_display_string(2, 0, ks, 14, 1);
-	ssd1306_display_string(2, 16, wh, 14, 1);
-	ssd1306_display_string(2, 32, kb, 14, 1);
-	ssd1306_display_string(2, 32, rb, 14, 1);
+	sprintf(kartSpeed, "v kart: %.1f km/h",kartSpd);
+	sprintf(kartBattery, "bat.kart: %.1f %%", kartBatt);
+	sprintf(wheelsAngle, "skret kol: %.1f *",wheels);
+	sprintf(rcBattery, "bat.RC: %.1f %%",rcBatt);
+	/*
+	ssd1306_display_string(Xpos,Ypos, wskaznik(uint8_t) na tablice char do wyswietlenia, Font?, nie wiem co to robi ale jak wstawi sie 0 to nie dziala);
+	*/	
+	ssd1306_display_string(2, 0, (uint8_t *)kartSpeed , 14, 1);
+	ssd1306_display_string(2, 16,(uint8_t *)kartBattery , 14, 1);
+	ssd1306_display_string(2, 32,(uint8_t *)wheelsAngle  , 14, 1);
+	ssd1306_display_string(2, 48,(uint8_t *)rcBattery , 14, 1);
 	ssd1306_refresh_gram();
-	
-
 }

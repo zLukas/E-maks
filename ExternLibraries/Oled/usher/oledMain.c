@@ -2,6 +2,7 @@
 
 void oledSample(void) 
 {
+
 	system_init();
 	
 	ssd1306_clear_screen(0xFF);

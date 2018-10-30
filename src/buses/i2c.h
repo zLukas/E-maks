@@ -12,8 +12,6 @@
 //#define FORBOT_BASED_I2C_FUNCTIONS 
 
 void i2cInit(void);
- 
-void oledWriteLine(uint8_t *textToWrite, uint8_t line);
-void oledShowParameters(uint16_t *kartBattery, uint16_t  *kartSpeed, uint16_t  *wheels, uint16_t  *rcBattery);
+void oledShowParameters(float kartBatt,float  kartSpd,float  wheels,float  rcBatt);
 
 #endif
