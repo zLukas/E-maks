@@ -13,5 +13,6 @@
 
 void i2cInit(void);
 void oledShowParameters(float kartBatt,float  kartSpd,float  wheels,float  rcBatt);
+void oledTest(void);
 
 #endif

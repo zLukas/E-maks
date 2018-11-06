@@ -5,8 +5,7 @@
 #include <hardware.h>
 #include "oledMain.h"
 #include "i2c.h"
-
-
+#include "adc.h"
 
 
 int main(void);

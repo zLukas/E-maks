@@ -145,6 +145,15 @@ void tim4Init(void)
 	TIM_OC2Init(TIM4, &channel);
 	TIM_Cmd(TIM4, ENABLE);
 }
+/* delayMs
+	-Timer base delay in microseconds
+*/
+void delayMs(volatile int time)
+{
+	TIM4->CNT = time;
+	while(TIM1->CNT);
+}
+
 
 /* dmaInit
 	-Timer event configuration

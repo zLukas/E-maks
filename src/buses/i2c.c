@@ -56,3 +56,11 @@ void oledShowParameters(float kartBatt, float kartSpd, float wheels, float rcBat
 	ssd1306_display_string(2, 48,(uint8_t *)rcBattery , 14, 1);
 	ssd1306_refresh_gram();
 }
+
+void oledTest(void)
+{				
+		oledShowParameters(50,60,10,67);		
+		oledShowParameters(40,55,20,65);
+		oledShowParameters(30,67,15,60);
+		oledShowParameters(20,59,20,48);
+}

@@ -103,5 +103,6 @@ void gpioInit(void);
 void dmaInit(void);
 void tim4Init(void);
 void nvicInit (void);
+void delayMs(volatile int time);
 
 #endif
