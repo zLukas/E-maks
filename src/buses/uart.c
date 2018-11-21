@@ -2,10 +2,10 @@
 
 USART_InitTypeDef uart;
 
-/* uartINit
+/* uartInit
 	-USARTx configuration 
 */
-void uart1init(USART_TypeDef *usartx )
+void uartInit(USART_TypeDef *usartx )
 {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
@@ -20,7 +20,7 @@ void uart1init(USART_TypeDef *usartx )
 */
 void sendChar(char c, USART_TypeDef *usartx)
 {
- while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+ while (USART_GetFlagStatus(usartx, USART_FLAG_TXE) == RESET);
  USART_SendData(usartx, c);
 }
  /* sendString
@@ -47,3 +47,11 @@ char uartReceive(USART_TypeDef *usartx)
 		}
  return c;
 }
+int __io_putchar(int c)
+{
+	if (c=='\n')
+		sendChar('\r',USART1);
+	sendChar(c,USART1);
+	return c;
+}
+

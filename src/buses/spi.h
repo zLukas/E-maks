@@ -8,5 +8,7 @@
 
 void spiInit(void);
 uint8_t spiSendReceive(uint8_t byte);
+void nrf24_ce_digitalWrite(uint8_t state);
+void nrf24_csn_digitalWrite(uint8_t state);
  
 #endif

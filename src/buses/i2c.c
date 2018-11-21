@@ -4,7 +4,7 @@
 /*
 	additional universal i2c functions just in case
 */
-
+extern void* i2cData;
 
 
 /*
@@ -31,7 +31,61 @@ void i2cInit(void)
 	i2c.I2C_ClockSpeed = 100000;
 	I2C_Init(I2C1, &i2c);
 	I2C_Cmd(I2C1, ENABLE);
+	
+	I2C_DMACmd(I2C1,ENABLE);
 } 
+
+/*
+	i2cSetAddress
+	-connect to device and send memeory address to send data
+*/
+void i2cSetAddress(uint32_t memoryAddress)
+{
+	I2C_GenerateSTART(I2C1,ENABLE);
+	 while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
+ I2C_Send7bitAddress(I2C1, OLED_DEVICE_ADDRESS, I2C_Direction_Transmitter);
+ while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
+ 
+ I2C_SendData(I2C1, memoryAddress);
+ while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
+}
+
+void i2cWrite(uint32_t memoryAddress, int dataSize)
+{
+	int i;
+	const uint8_t* buffer = (uint8_t*)i2cData;
+	i2cSetAddress(memoryAddress);
+	for (i = 0; i < dataSize; i++) 
+	{
+		I2C_SendData(I2C1, buffer[i]);
+		while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTING) != SUCCESS);
+  }
+	
+	I2C_GenerateSTOP(I2C1, ENABLE);
+}
+
+
+void i2cRead(uint32_t memoryAddress, int dataSize)
+{
+	int i;
+	uint8_t* buffer = (uint8_t*)i2cData;
+	i2cSetAddress(memoryAddress);
+	 while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
+ 
+	I2C_AcknowledgeConfig(I2C1, ENABLE);
+	I2C_Send7bitAddress(I2C1, OLED_DEVICE_ADDRESS, I2C_Direction_Receiver);
+	while (I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED) != SUCCESS);
+ 
+	for (i = 0; i < dataSize - 1; i++) 
+	{
+		while(I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED) != SUCCESS);
+     buffer[i] = I2C_ReceiveData(I2C1);
+  }
+ I2C_AcknowledgeConfig(I2C1, DISABLE);
+    I2C_GenerateSTOP(I2C1, ENABLE);
+    while(I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED) != SUCCESS);
+    buffer[i] = I2C_ReceiveData(I2C1);
+}
 
 /*
 	funkcja wyswietlajaca bazujaca na bibliotece OLED
