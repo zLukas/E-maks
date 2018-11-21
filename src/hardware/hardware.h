@@ -44,8 +44,10 @@
 #define	SCREEN_RES			GPIO_Pin_11			//out		reset  high pullup 
 #define SCREEN_RES_PORT	GPIOA
 
-#define	UART1_TX				GPIO_Pin_9			//af_PP
-#define	UART1_RX				GPIO_Pin_10			//floating
+//#define	UART1_TX				GPIO_Pin_9			//pad , kontroler 
+#define	UART1_TX				GPIO_Pin_2			//nucleo RB
+//#define	UART1_RX				GPIO_Pin_10			//pad, kontroler
+#define	UART1_RX				GPIO_Pin_3			//nucleo RB
 #define UART1_PORT			GPIOA
 
 #define	UART2_TX				GPIO_Pin_2			//af_pp

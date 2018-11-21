@@ -18,7 +18,7 @@ void spiInit(void)
 	spi.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;
 	spi.SPI_FirstBit = SPI_FirstBit_MSB;
 	spi.SPI_CRCPolynomial = 7;
-	SPI_Init(SPI1,&spi);
+	SPI_Init(SPI2,&spi);
  
 	SPI_Cmd(SPI2, ENABLE);
 }
@@ -28,11 +28,11 @@ void spiInit(void)
 */
 uint8_t spiSendReceive(uint8_t byte)
 {
- while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
+ while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
  SPI_I2S_SendData(SPI2, byte);
  
- while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
- return SPI_I2S_ReceiveData(SPI1);
+ while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
+ return SPI_I2S_ReceiveData(SPI2);
 }
 
 

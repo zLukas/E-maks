@@ -1,12 +1,11 @@
 #include "nrf24RadioFunctions.h"
 
 
-uint8_t sendRadioMessage(uint8_t* data, uint8_t* txAddress, uint8_t* rxAddress, uint8_t channel, uint8_t payload)
+uint8_t sendRadioMessage(uint8_t* data, uint8_t channel, uint8_t payload)
 {
 	nrf24_config(channel, payload);
 	
-	nrf24_tx_address(txAddress);
-	nrf24_rx_address(rxAddress);
+
 	
 	uint8_t temp;
 	uint8_t transmissionStatus = 0;
@@ -34,13 +33,11 @@ uint8_t sendRadioMessage(uint8_t* data, uint8_t* txAddress, uint8_t* rxAddress, 
 	return transmissionStatus;
 }
 
-uint8_t * receiveRadioMessage(uint8_t* txAddress, uint8_t* rxAddress, uint8_t channel, uint8_t payload)
+uint8_t * receiveRadioMessage( uint8_t channel, uint8_t payload)
 {
-	static uint8_t dataArray[5];
+	static uint8_t dataArray[4];
 	nrf24_config(channel, payload);
 	
-	nrf24_tx_address(txAddress);
-	nrf24_rx_address(rxAddress);
 	
 	if (nrf24_dataReady())
 	{
