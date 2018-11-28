@@ -1,12 +1,35 @@
+/*
+	nrf24RadioFunction.c
+	nrf24 sending and receiving functions.
+*/
+
 #include "nrf24RadioFunctions.h"
 
 
-uint8_t sendRadioMessage(uint8_t* data, uint8_t channel, uint8_t payload)
+/*
+	setRegister
+	function to configure nrf24 parameters.
+	- payload: set payload value.
+	- channel: set used channel
+	- txAdrr: set TX line address
+	- rxAdrr: set RX line address
+*/
+void setRegisers(uint8_t payload, uint8_t channel, uint8_t* txAdrr, uint8_t* rxAdrr)
 {
-	nrf24_config(channel, payload);
+		nrf24_config(channel,payload);
 	
+		nrf24_tx_address(txAdrr);
+		nrf24_rx_address(rxAdrr);
+}
 
-	
+/*
+	sendRadioMessage
+	function to send message via nrf24.
+	- data: data to send.
+*/
+uint8_t sendRadioMessage(uint8_t* data)
+{
+
 	uint8_t temp;
 	uint8_t transmissionStatus = 0;
 
@@ -33,6 +56,11 @@ uint8_t sendRadioMessage(uint8_t* data, uint8_t channel, uint8_t payload)
 	return transmissionStatus;
 }
 
+/*
+	receiveRadioMessage
+	function to receive message via nrf24.
+	- data: data to send.
+*/
 uint8_t * receiveRadioMessage( uint8_t channel, uint8_t payload)
 {
 	static uint8_t dataArray[4];
@@ -47,8 +75,6 @@ uint8_t * receiveRadioMessage( uint8_t channel, uint8_t payload)
 	else 
 	{
 		return dataArray;
-
-
 	}
 }
 

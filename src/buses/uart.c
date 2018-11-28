@@ -1,5 +1,13 @@
+/*
+	uart.c
+	USART configuration files.
+*/
+
 #include "uart.h"
 
+/*
+	uart unit structure.
+*/
 USART_InitTypeDef uart;
 
 /* uartInit
@@ -16,42 +24,48 @@ void uartInit(USART_TypeDef *usartx )
 }
 
 /* sendChar
-	- basic data sending function
+	 one char sending.
+	- charToSend : char to send
 */
-void sendChar(char c, USART_TypeDef *usartx)
+void sendChar(char charToSend, USART_TypeDef *usartx)
 {
  while (USART_GetFlagStatus(usartx, USART_FLAG_TXE) == RESET);
- USART_SendData(usartx, c);
+ USART_SendData(usartx, charToSend);
 }
  /* sendString
-	-complex data sending function 
+		-send several chars(string) function 
+		- dataToSend: sting to send
 */
-void sendString(const char* s, USART_TypeDef *usartx)
+void sendString(const char* dataToSend, USART_TypeDef *usartx)
 {
- while (*s)
- sendChar(*s++, usartx);
+ while (*dataToSend)
+ sendChar(*dataToSend++, usartx);
 }
-/* sendString
-	-complex data sending function 
+/* uartReceive
+	function to read from RX line.
+	- usartx: usart number UASRT2 or USART1.
 */
 char uartReceive(USART_TypeDef *usartx)
 {
-	char c;
+	char received;
 	if (USART_GetFlagStatus(usartx, USART_FLAG_RXNE)) 
 		{
-			c = USART_ReceiveData(usartx);
+			received = USART_ReceiveData(usartx);
 		}
 	else
 		{
-		c = ' ';
+		received = ' ';
 		}
- return c;
+ return received;
 }
-int __io_putchar(int c)
+/*
+	__io_putchar
+	default c function to prevent writing everything in one line in terminal.
+*/
+int __io_putchar(int received)
 {
-	if (c=='\n')
+	if (received=='\n')
 		sendChar('\r',USART1);
-	sendChar(c,USART1);
-	return c;
+	sendChar(received,USART1);
+	return received;
 }
-

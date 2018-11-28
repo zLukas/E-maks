@@ -1,3 +1,8 @@
+/*
+	spi.h
+	spi.c header file.
+*/
+
 #ifndef _spi_H_
 #define _spi_H_
 

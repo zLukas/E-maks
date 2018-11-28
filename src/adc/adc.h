@@ -1,3 +1,8 @@
+/*
+	adc.h
+	adc.c header file. Defines and constant values defines
+*/
+
 #ifndef _ADC_H_
 #define _ADC_H_
 
@@ -7,27 +12,10 @@
 
 #define ADC_CHANNELS  4
 
-/*
-	adc na dole plytki na pólkolach, poziome X,
-	adc przy malych wcieciach pionowe Y
-*/
 #define ADC_JOY1_X			0
 #define ADC_JOY1_Y			1
 #define ADC_JOY2_X			3
 #define ADC_JOY2_Y			2
-
-
-/*
-	przedzialy napiec w zaleznosci od wpiecia +  i - ptencjometru 
-	przesuniecie o 0,5V  
-	
-	zakres 1
-	0.5V -3.3V
-	
-	zakres 2
-	0.0V -2.8V
-	
-*/
 
 #define ADC_MAX 				3.3
 #define ADC_MIN					0.5

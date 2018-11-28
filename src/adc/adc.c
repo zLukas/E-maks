@@ -1,10 +1,22 @@
+/*
+	adc.c 
+	ADC module initialization file.
+*/
+
 #include "adc.h"
 #include "LIB_Config.h"
 
+
+/*
+	variables:
+	- adcValue holds raw ADC data
+	-	adcConvertedValues holds calulated voltage data
+*/
 uint16_t adcValues[ADC_CHANNELS];
 float adcConvertedValues[ADC_CHANNELS];
 ADC_InitTypeDef adc;
 /* 
+	adcInit
 	-ADC and 4  ADC channels configuration 
 */
 void adcInit(void)
@@ -36,6 +48,11 @@ void adcInit(void)
   ADC_SoftwareStartConvCmd(ADC1, ENABLE);
 }
 
+
+/*
+	convertToVolts
+	-function for converting raw adc int value to float voltage value
+*/
 void ConverToVolts(void)
 {
 	for (int i = 0 ; i<= ADC_CHANNELS-1;i++)
@@ -43,33 +60,33 @@ void ConverToVolts(void)
 		adcConvertedValues[i]= (float)adcValues[i] *3.3/4096.0f;
 	}
 }
+
+/*
+	adcTest
+	- function created for testing adc functionality
+	- function shows adc values on oled screen
+
+*/
 void adcTest(void)
 {
 	char adc1[20];
 	char adc2[20];
 	char adc3[20];
 	char adc4[20];
-	/*
-		sprintf(tablica char, "jakis statyczny text i %f %d", watorsc do wstawienia pod %f, wartosc do wstawienia pod d)
-	*/
+/*
+		sprintf( char array, "sample text i %f %d", value to replace %f, walu to replace %d)
+*/
 	ConverToVolts();
 	sprintf(adc1, "adc1 j1x: %.1f ",adcConvertedValues[ADC_JOY1_X]);
 	sprintf(adc2, "adc2 j1y: %.1f ", adcConvertedValues[ADC_JOY1_Y]);
 	sprintf(adc3, "adc3 j2x: %.1f ",adcConvertedValues[ADC_JOY2_X]);
 	sprintf(adc4, "adc4 j2y: %.1f ",adcConvertedValues[ADC_JOY2_Y]);
-	/*
-	ssd1306_display_string(Xpos,Ypos, wskaznik(uint8_t) na tablice char do wyswietlenia, Font?, nie wiem co to robi ale jak wstawi sie 0 to nie dziala);
-	*/	
+/*
+	ssd1306_display_string(Xpos,Ypos, (uint8_t)pointer on char wtih data to show, Font?, dont't know what does this argument but wit "0" not working);
+*/	
 	ssd1306_display_string(2, 0, (uint8_t *)adc1 , 14, 1);
 	ssd1306_display_string(2, 16,(uint8_t *)adc2 , 14, 1);
 	ssd1306_display_string(2, 32,(uint8_t *)adc3  , 14, 1);
 	ssd1306_display_string(2, 48,(uint8_t *)adc4, 14, 1);
 	ssd1306_refresh_gram();
-
 }
-
-
-
-
-
-

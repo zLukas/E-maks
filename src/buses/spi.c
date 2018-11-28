@@ -1,9 +1,17 @@
+/*
+	spi.c
+	SPI configuration files.
+*/
+
 #include "spi.h"
 
+/*
+	spi init structure
+*/
 SPI_InitTypeDef spi;
 
 /* spiInit
-	-spi bus initialization
+	-spi bus configuraion
 */
 void spiInit(void)
 {
@@ -24,7 +32,7 @@ void spiInit(void)
 }
 
 /* spisendReceive
-	-sending then receiving function
+	-sending and receiving function. 
 */
 uint8_t spiSendReceive(uint8_t byte)
 {
@@ -36,8 +44,10 @@ uint8_t spiSendReceive(uint8_t byte)
 }
 
 
-/*
+/* nrf24_ce_digitalWrite.
+	 externall library function 
 	 set chip enable state 
+	 -state: 0 or 1 value
 */
 void nrf24_ce_digitalWrite(uint8_t state)
 {
@@ -50,8 +60,10 @@ void nrf24_ce_digitalWrite(uint8_t state)
         GPIO_ResetBits(NRF_PORT, NRF_CE);
     }
 }
-/*
-	 set chip select state 
+/* nrf24_csn_digitalWrite
+	 externall library function 
+	 set chip enable state
+	 -state: 0 or 1 value
 */
 void nrf24_csn_digitalWrite(uint8_t state)
 {

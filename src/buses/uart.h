@@ -1,3 +1,8 @@
+/*
+	uart.h
+	USART header file.
+*/
+
 #ifndef _UART1_H_
 #define _UART1_H_
 

@@ -17,18 +17,17 @@ int main()
 	 tim4Init();
 	 nvicInit ();
 	 adcInit();
-	spiInit();
-	uartInit(USART1);
+	 spiInit();
+	 uartInit(USART1);
 	
 	system_init();
 	
 	ssd1306_clear_screen(0xFF);
 	ssd1306_clear_screen(0x00);
 	
-	nrf24_config(2,4);
+	setRegisers(4,2,tx_address,rx_address);
 	
-	nrf24_tx_address(tx_address);
-	nrf24_rx_address(rx_address);
+	
 	while(1)
 	{
 		delayMs(1);
@@ -63,12 +62,15 @@ int main()
 			counter++;			
 		}
 		
-		sendingStatus = sendRadioMessage(txdataArray, 2,4);
+		/* reset przerwania */
+		GPIO_SetBits(NRF_PORT, NRF_IRQ);
+		
+		sendingStatus = sendRadioMessage(txdataArray);
 		delayMs(500);
 		
-		/*
-		adcTest();
-		*/
+		
+	/*	adcTest();*/
+		
 			
 	}
 }

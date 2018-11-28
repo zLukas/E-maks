@@ -1,6 +1,13 @@
+/*
+	 hardware.c 
+	 peripethial configuration. 
+*/
+
 #include "hardware.h"
 
-
+/*
+	peiphethial init structures
+*/
 GPIO_InitTypeDef gpio;
 DMA_InitTypeDef dma;
 TIM_TimeBaseInitTypeDef tim;
@@ -8,15 +15,11 @@ TIM_OCInitTypeDef channel;
 NVIC_InitTypeDef nvic;
 EXTI_InitTypeDef exti;
 /*
-	ADC configuring variables demanded for DMA configuration
+	ADC variables defined in adc.c file needed for DMA configuration
 */
 extern ADC_InitTypeDef adc;
 extern int adcValues[];
 
-/*
-	Variable thta hold input and output data from I2C 
-*/
-void* i2cData;
 
 /* gpioInit
 	- Pinout configuration
@@ -54,9 +57,7 @@ void gpioInit(void)
 	gpio.GPIO_Pin = RFM_CS;
 	gpio.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(RFM_CS_PORT,&gpio);
-	
-	
-	
+		
 	/*
 		Oled reset
 	*/
@@ -82,7 +83,6 @@ void gpioInit(void)
 	gpio.GPIO_Pin = UART2_RX; 
 	gpio.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(UART2_PORT,&gpio);
-	
 	
 	/*
 		ADC Pinout
@@ -148,17 +148,18 @@ void gpioInit(void)
 }
 /* dmaInit
 	- DMA  configuration
-``-ADC  channel 1
-	-I2C  channel 2
-	-SPI2 MOSI channel 4
-	-SPI2 MISO channel 5
+``-	ADC  channel 1
+	-	SPI2 MOSI channel 4
+	-	SPI2 MISO channel 5
 
 */
 void dmaInit(void)
 {
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	
-	
+	/*
+		ADC channel
+	*/
 	DMA_StructInit(&dma);
 	dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
 	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
@@ -171,22 +172,11 @@ void dmaInit(void)
 	dma.DMA_Mode = DMA_Mode_Circular;
 	DMA_Init(DMA1_Channel1, &dma);
 	DMA_Cmd(DMA1_Channel1, ENABLE);
+
 	
-	DMA_StructInit(&dma);
-	dma.DMA_PeripheralBaseAddr = I2C1->DR;
-	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	dma.DMA_MemoryBaseAddr = (uint32_t)i2cData;
-	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-	dma.DMA_DIR = DMA_DIR_PeripheralSRC;
-	dma.DMA_BufferSize = 1;
-	dma.DMA_Mode = DMA_Mode_Circular;
-	DMA_Init(DMA1_Channel2, &dma);
-	DMA_Cmd(DMA1_Channel2, ENABLE);
-	
-	
-	DMA_StructInit(&dma);
+	/*
+		SPI2 MOSI channel
+	*/	
 	DMA_DeInit(DMA1_Channel4);
 
 	dma.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
@@ -200,8 +190,13 @@ void dmaInit(void)
 	dma.DMA_M2M = DMA_M2M_Disable;
 	DMA_Init(DMA1_Channel4, &dma);
 
+
 	DMA_ITConfig(DMA1_Channel4, DMA_IT_TC, ENABLE);
 	
+	
+	/*
+		SPI2 MISO channel
+	*/
 	DMA_DeInit(DMA1_Channel5);
 
 	dma.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
@@ -216,7 +211,7 @@ void dmaInit(void)
 	DMA_Init(DMA1_Channel5, &dma);
 }
 	
-/* dmaInit
+/* tim4Init
 	- Timer4 configuration
 */
 void tim4Init(void)
@@ -237,7 +232,9 @@ void tim4Init(void)
 	TIM_Cmd(TIM4, ENABLE);
 }
 /*
-	nrf24L01+ timer Init
+	tim2Init
+	supply timer for 	nrf24L01+ 
+	- prescalled on 1Mhz
 */
 void Tim2Init(void)
 {
@@ -254,6 +251,10 @@ void Tim2Init(void)
 	
 	
 }
+/*
+	nvicInit
+	interruption channels (IRQn) configuration
+*/
 
 void nvicInit (void)
 {		
@@ -308,6 +309,11 @@ void delayUs(volatile int time)
 	while(TIM1->CNT);
 }
 
+/*
+	extiInit
+	interruption lines configuration
+*/
+
 void EXTI_config()
 {
 	
@@ -333,4 +339,3 @@ void EXTI_config()
 	exti.EXTI_LineCmd = ENABLE;
 	EXTI_Init(&exti);
 }
-
