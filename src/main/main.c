@@ -25,7 +25,7 @@ int main()
 	ssd1306_clear_screen(0xFF);
 	ssd1306_clear_screen(0x00);
 	
-	setRegisers(4,2,tx_address,rx_address);
+
 	
 	
 	while(1)
@@ -65,7 +65,7 @@ int main()
 		/* reset przerwania */
 		GPIO_SetBits(NRF_PORT, NRF_IRQ);
 		
-		sendingStatus = sendRadioMessage(txdataArray);
+		
 		delayMs(500);
 		
 		

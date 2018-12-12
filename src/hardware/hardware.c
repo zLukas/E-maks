@@ -9,7 +9,9 @@
 	peiphethial init structures
 */
 GPIO_InitTypeDef gpio;
-DMA_InitTypeDef dma;
+DMA_InitTypeDef dmaAdc;
+DMA_InitTypeDef dmaRx;
+DMA_InitTypeDef dmaTx;
 TIM_TimeBaseInitTypeDef tim;
 TIM_OCInitTypeDef channel;
 NVIC_InitTypeDef nvic;
@@ -19,6 +21,7 @@ EXTI_InitTypeDef exti;
 */
 extern ADC_InitTypeDef adc;
 extern int adcValues[];
+extern uint8_t Receive_buffer[];
 
 
 /* gpioInit
@@ -160,55 +163,57 @@ void dmaInit(void)
 	/*
 		ADC channel
 	*/
-	DMA_StructInit(&dma);
-	dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
-	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-	dma.DMA_MemoryBaseAddr = (uint32_t)adcValues;
-	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-	dma.DMA_DIR = DMA_DIR_PeripheralSRC;
-	dma.DMA_BufferSize = ADC_CHANNELS;
-	dma.DMA_Mode = DMA_Mode_Circular;
-	DMA_Init(DMA1_Channel1, &dma);
+	DMA_StructInit(&dmaAdc);
+	dmaAdc.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
+	dmaAdc.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	dmaAdc.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+	dmaAdc.DMA_MemoryBaseAddr = (uint32_t)adcValues;
+	dmaAdc.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	dmaAdc.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+	dmaAdc.DMA_DIR = DMA_DIR_PeripheralSRC;
+	dmaAdc.DMA_BufferSize = ADC_CHANNELS;
+	dmaAdc.DMA_Mode = DMA_Mode_Circular;
+	DMA_Init(DMA1_Channel1, &dmaAdc);
 	DMA_Cmd(DMA1_Channel1, ENABLE);
 
 	
 	/*
-		SPI2 MOSI channel
+		SPI2 MISO channel
 	*/	
 	DMA_DeInit(DMA1_Channel4);
-
-	dma.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
-	dma.DMA_DIR = DMA_DIR_PeripheralSRC;
-	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dma.DMA_Mode = DMA_Mode_Normal;
-	dma.DMA_Priority = DMA_Priority_High;
-	dma.DMA_M2M = DMA_M2M_Disable;
-	DMA_Init(DMA1_Channel4, &dma);
-
-
+	DMA_StructInit(&dmaRx);
+	dmaRx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	dmaRx.DMA_DIR = DMA_DIR_PeripheralSRC;
+	dmaRx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	dmaRx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	dmaRx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	dmaRx.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	dmaRx.DMA_Mode = DMA_Mode_Normal;
+	dmaRx.DMA_Priority = DMA_Priority_High;
+	dmaRx.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel4, &dmaRx);
+	
 	DMA_ITConfig(DMA1_Channel4, DMA_IT_TC, ENABLE);
 	
 	
 	/*
-		SPI2 MISO channel
+		SPI2 MOSI channel
 	*/
 	DMA_DeInit(DMA1_Channel5);
-
-	dma.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
-	dma.DMA_DIR = DMA_DIR_PeripheralDST;
-	dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	dma.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dma.DMA_Mode = DMA_Mode_Normal;
-	dma.DMA_Priority = DMA_Priority_VeryHigh;
-	dma.DMA_M2M = DMA_M2M_Disable;
-	DMA_Init(DMA1_Channel5, &dma);
+	DMA_StructInit(&dmaTx);
+	dmaTx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	dmaTx.DMA_DIR = DMA_DIR_PeripheralDST;
+	dmaTx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	dmaTx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	dmaTx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	dmaTx.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	dmaTx.DMA_Mode = DMA_Mode_Normal;
+	dmaTx.DMA_Priority = DMA_Priority_VeryHigh;
+	dmaTx.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel5, &dmaTx);
+		
+	DMA_ITConfig(DMA1_Channel5, DMA_IT_TC, ENABLE);
+	
 }
 	
 /* tim4Init
@@ -255,6 +260,26 @@ void Tim2Init(void)
 	nvicInit
 	interruption channels (IRQn) configuration
 */
+void extiInit(void)
+{
+		//Utworzenie struktury inicjuj¹cej
+	EXTI_InitTypeDef exti;
+	EXTI_StructInit(&exti);
+
+	//Poinformowanie uC o Ÿródle przerwania
+	GPIO_EXTILineConfig(NRF_PORT_SRC, NRF_IRQ_SRC);
+
+	//Przerwanie na zboczu narastaj¹cym linii EXTI_Linex
+	exti.EXTI_Line = NRF_EXTI_LINE;
+	exti.EXTI_Mode = EXTI_Mode_Interrupt;
+	exti.EXTI_Trigger = EXTI_Trigger_Falling;
+	exti.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&exti);
+
+}
+
+
+
 
 void nvicInit (void)
 {		
@@ -292,6 +317,7 @@ void nvicInit (void)
 	nvic.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&nvic);
 }
+
 /* delayMs
 	-Timer based delay in miliseconds
 */
@@ -309,33 +335,11 @@ void delayUs(volatile int time)
 	while(TIM1->CNT);
 }
 
+
 /*
-	extiInit
-	interruption lines configuration
+	EXTI9_5_IRQHandler,
+	@breif responsible for receiving data from nrf
 */
 
-void EXTI_config()
-{
-	
-	
-	EXTI_StructInit(&exti);
 
-	//Poinformowanie uC o Ÿródle przerwania
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOC, GPIO_PinSource8);
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOC, GPIO_PinSource5);
 
-	//Przerwanie na zboczu narastaj¹cym linii EXTI_Linex
-	exti.EXTI_Line = EXTI_Line8;
-	exti.EXTI_Mode = EXTI_Mode_Interrupt;
-	exti.EXTI_Trigger = EXTI_Trigger_Falling;
-	exti.EXTI_LineCmd = ENABLE;
-	EXTI_Init(&exti);
-
-	//////////////////////////////////////
-
-	exti.EXTI_Line = EXTI_Line5;
-	exti.EXTI_Mode = EXTI_Mode_Interrupt;
-	exti.EXTI_Trigger = EXTI_Trigger_Falling;
-	exti.EXTI_LineCmd = ENABLE;
-	EXTI_Init(&exti);
-}

@@ -6,7 +6,6 @@
 #include "oledMain.h"
 #include "i2c.h"
 #include "adc.h"
-#include "nrf24Radiofunctions.h"
 #include "uart.h"
 
 

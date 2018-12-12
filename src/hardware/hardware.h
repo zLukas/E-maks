@@ -20,6 +20,7 @@
 #include <misc.h>
 
 #include	"adc.h"
+#include "spi.h"
 
 
 #define DIO0						GPIO_Pin_0		
@@ -41,9 +42,12 @@
 #define RFM_CS_PORT			GPIOC
 
 #define	NRF_CS					GPIO_Pin_7		
-#define NRF_IRQ					GPIO_Pin_8		
+#define NRF_IRQ					GPIO_Pin_8
+#define NRF_IRQ_SRC			GPIO_PinSource8
 #define NRF_CE					GPIO_Pin_9		
-#define NRF_PORT				GPIOC					
+#define NRF_PORT				GPIOC	
+#define NRF_PORT_SRC 		GPIO_PortSourceGPIOC
+#define NRF_EXTI_LINE		EXTI_Line8
 
 
 #define	SCREEN_RES			GPIO_Pin_11			//out		reset  high pullup 
