@@ -28,16 +28,54 @@
 #ifndef TM_DEFINES_H
 #define TM_DEFINES_H
 
-/* Put your global defines for all libraries here used in your project */
-/*
-	library source https://stm32f4-discovery.net/2014/06/library-17-nrf24l01-stm32f4xx/
-*/
+/*Put your global defines for all libraries here used in your project */
 
 
-/* 
-	interesting functions
+#endif
+
+/**
+void TM_SPI_SendMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint8_t* dataIn, uint32_t count) {
+	uint32_t i;
 	
+	 Check if SPI is enabled 
+	SPI_CHECK_ENABLED(SPIx);
 	
+	Wait for previous transmissions to complete if DMA TX enabled for SPI 
+	SPI_WAIT(SPIx);
+	
+	for (i = 0; i < count; i++) {
+		 Fill output buffer with data 
+		SPIx->DR = dataOut[i];
+		
+		 Wait for SPI to end everything 
+		SPI_WAIT(SPIx);
+		
+		 Read data register 
+		dataIn[i] = SPIx->DR;
+	}
+}
+
+void TM_SPI_WriteMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint32_t count) {
+	uint32_t i;	
+	
+	 Check if SPI is enabled 
+	SPI_CHECK_ENABLED(SPIx);
+	
+	 Wait for previous transmissions to complete if DMA TX enabled for SPI 
+	SPI_WAIT(SPIx);
+	
+	for (i = 0; i < count; i++) {
+		 Fill output buffer with data 
+		SPIx->DR = dataOut[i];
+		
+		 Wait for SPI to end everything 
+		SPI_WAIT(SPIx);
+		
+		 Read data register 
+		(void)SPIx->DR;
+	}
+}
+
 void TM_SPI_ReadMulti(SPI_TypeDef* SPIx, uint8_t* dataIn, uint8_t dummy, uint32_t count) {
 	uint32_t i;
 	
@@ -58,11 +96,9 @@ void TM_SPI_ReadMulti(SPI_TypeDef* SPIx, uint8_t* dataIn, uint8_t dummy, uint32_
 		dataIn[i] = SPIx->DR;
 	}
 }
-*/
 
-/*
-void TM_SPI_SendMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint8_t* dataIn, uint32_t count) {
-	uint32_t i;
+void TM_SPI_SendMulti16(SPI_TypeDef* SPIx, uint16_t* dataOut, uint16_t* dataIn, uint32_t count) {
+	uint32_t i;	
 	
 	 Check if SPI is enabled 
 	SPI_CHECK_ENABLED(SPIx);
@@ -71,7 +107,7 @@ void TM_SPI_SendMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint8_t* dataIn, uint
 	SPI_WAIT(SPIx);
 	
 	for (i = 0; i < count; i++) {
-		Fill output buffer with data 
+		 Fill output buffer with data 
 		SPIx->DR = dataOut[i];
 		
 		 Wait for SPI to end everything 
@@ -81,7 +117,46 @@ void TM_SPI_SendMulti(SPI_TypeDef* SPIx, uint8_t* dataOut, uint8_t* dataIn, uint
 		dataIn[i] = SPIx->DR;
 	}
 }
+
+void TM_SPI_WriteMulti16(SPI_TypeDef* SPIx, uint16_t* dataOut, uint32_t count) {
+	uint32_t i;
+	
+	 Check if SPI is enabled 
+	SPI_CHECK_ENABLED(SPIx);
+	
+	 Wait for previous transmissions to complete if DMA TX enabled for SPI 
+	SPI_WAIT(SPIx);
+	
+	for (i = 0; i < count; i++) {
+		 Fill output buffer with data 
+		SPIx->DR = dataOut[i];
+		
+		 Wait for SPI to end everything 
+		SPI_WAIT(SPIx);
+		
+		 Read data register 
+		(void)SPIx->DR;
+	}
+}
+
+void TM_SPI_ReadMulti16(SPI_TypeDef* SPIx, uint16_t* dataIn, uint16_t dummy, uint32_t count) {
+	uint32_t i;
+	
+	 Check if SPI is enabled 
+	SPI_CHECK_ENABLED(SPIx);
+	
+	 Wait for previous transmissions to complete if DMA TX enabled for SPI 
+	SPI_WAIT(SPIx);
+	
+	for (i = 0; i < count; i++) {
+		 Fill output buffer with data 
+		SPIx->DR = dummy;
+		
+		 Wait for SPI to end everything 
+		SPI_WAIT(SPIx);
+		
+		 Save data to buffer 
+		dataIn[i] = SPIx->DR;
+	}
+}
 */
-
-
-#endif

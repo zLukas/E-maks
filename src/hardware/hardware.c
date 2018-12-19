@@ -10,8 +10,8 @@
 */
 GPIO_InitTypeDef gpio;
 DMA_InitTypeDef dmaAdc;
-DMA_InitTypeDef dmaRx;
-DMA_InitTypeDef dmaTx;
+DMA_InitTypeDef spiDmaRx;
+DMA_InitTypeDef spiDmaTx;
 TIM_TimeBaseInitTypeDef tim;
 TIM_OCInitTypeDef channel;
 NVIC_InitTypeDef nvic;
@@ -178,39 +178,39 @@ void dmaInit(void)
 
 	
 	/*
-		SPI2 MISO channel
+		SPI2 transmit data
 	*/	
 	DMA_DeInit(DMA1_Channel4);
-	DMA_StructInit(&dmaRx);
-	dmaRx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
-	dmaRx.DMA_DIR = DMA_DIR_PeripheralSRC;
-	dmaRx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	dmaRx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	dmaRx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dmaRx.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dmaRx.DMA_Mode = DMA_Mode_Normal;
-	dmaRx.DMA_Priority = DMA_Priority_High;
-	dmaRx.DMA_M2M = DMA_M2M_Disable;
-	DMA_Init(DMA1_Channel4, &dmaRx);
+	DMA_StructInit(&spiDmaRx);
+	spiDmaRx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	spiDmaRx.DMA_DIR = DMA_DIR_PeripheralDST;
+	spiDmaRx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	spiDmaRx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	spiDmaRx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	spiDmaRx.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	spiDmaRx.DMA_Mode = DMA_Mode_Normal;
+	spiDmaRx.DMA_Priority = DMA_Priority_High;
+	spiDmaRx.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel4, &spiDmaRx);
 	
 	DMA_ITConfig(DMA1_Channel4, DMA_IT_TC, ENABLE);
 	
 	
 	/*
-		SPI2 MOSI channel
+		SPI2 received data
 	*/
 	DMA_DeInit(DMA1_Channel5);
-	DMA_StructInit(&dmaTx);
-	dmaTx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
-	dmaTx.DMA_DIR = DMA_DIR_PeripheralDST;
-	dmaTx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-	dmaTx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-	dmaTx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	dmaTx.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	dmaTx.DMA_Mode = DMA_Mode_Normal;
-	dmaTx.DMA_Priority = DMA_Priority_VeryHigh;
-	dmaTx.DMA_M2M = DMA_M2M_Disable;
-	DMA_Init(DMA1_Channel5, &dmaTx);
+	DMA_StructInit(&spiDmaTx);
+	spiDmaTx.DMA_PeripheralBaseAddr = (uint32_t)&SPI2->DR;
+	spiDmaTx.DMA_DIR = DMA_DIR_PeripheralSRC;
+	spiDmaTx.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	spiDmaTx.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	spiDmaTx.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	spiDmaTx.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	spiDmaTx.DMA_Mode = DMA_Mode_Normal;
+	spiDmaTx.DMA_Priority = DMA_Priority_VeryHigh;
+	spiDmaTx.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel5, &spiDmaTx);
 		
 	DMA_ITConfig(DMA1_Channel5, DMA_IT_TC, ENABLE);
 	
@@ -341,5 +341,14 @@ void delayUs(volatile int time)
 	@breif responsible for receiving data from nrf
 */
 
-
+/*
+	clear flag when spi data arrive
+*/
+void DMA1_Channel5_IRQHandler()
+{
+	if(DMA_GetITStatus(DMA1_IT_TC1) == 1)
+	{
+		DMA_ClearITPendingBit(DMA1_IT_GL1);
+	}
+}
 

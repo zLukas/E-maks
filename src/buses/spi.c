@@ -29,14 +29,31 @@ void spiInit(void)
 	SPI_Init(SPI2,&spi);
  
 	SPI_Cmd(SPI2, ENABLE);
+	SPI_I2S_DMACmd(SPI2,SPI_I2S_DMAReq_Rx,ENABLE);
+	SPI_I2S_DMACmd(SPI2,SPI_I2S_DMAReq_Tx,ENABLE);
 }
 
 /* spisendReceive
 	-sending and receiving function. 
 */
-uint8_t spiSendReceive(uint8_t byte)
+
+/*
+void spi2Wait(void)
 {
+	while((SPI2->SR & SPI_I2S_FLAG_TXE) == (uint16_t)SET || (SPI2->SR & SPI_I2S_FLAG_RXNE) == (uint16_t)SET);
+}
+*/
+uint8_t spiSendReceive(uint8_t byte)
+{	
+/*
+	wait for free buffer
+ while(SPI2->SR & SPI_I2S_FLAG_TXE == (uint16_t)SET || SPI2->SR & SPI_I2S_FLAG_RXNE == (uint16_t)SET);
+	
+	
+*/
+	
  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+	
  SPI_I2S_SendData(SPI2, byte);
  
  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);

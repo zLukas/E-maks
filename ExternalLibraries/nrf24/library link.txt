@@ -1,0 +1,3 @@
+lik to nrf24 library fo STM32F4 board:
+
+https:/stm32f4-discovery.net/2014/06/library-17-nrf24l01-stm32f4xx/

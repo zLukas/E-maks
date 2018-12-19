@@ -1,15 +1,19 @@
 #include "main.h"
 
+
 uint8_t dataArray[4];
 uint8_t txdataArray[4];
 uint8_t tx_address[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
 uint8_t rx_address[5] = {0xD7,0xD7,0xD7,0xD7,0xD7};
 uint8_t counter;
-uint8_t sendingStatus;
+extern uint8_t sendingStatus;
 
 extern float adcConvertedValues[];
-
-
+extern  uint8_t myAddress[];
+extern	uint8_t txAddress[];
+extern 	char dataOut[]; /* data to send */
+extern 	char	dataIn[];	/*received data */
+uint8_t sendstatus;
 int main()
 {
 	 gpioInit();
@@ -19,58 +23,22 @@ int main()
 	 adcInit();
 	 spiInit();
 	 uartInit(USART1);
+	 nrf24Set();
 	
-	system_init();
 	
+	/*fill data to send Array */
+	snprintf(dataOut,sizeof("it works !"),"it works !");
+	
+	sendstatus = nrf24SendData((uint8_t *)&dataOut);
+
 	ssd1306_clear_screen(0xFF);
 	ssd1306_clear_screen(0x00);
 	
-
-	
-	
 	while(1)
 	{
-		delayMs(1);
 		
+		delayMs(50);		
 		oledTest();
-		/*
-		if(nrf24_dataReady())
-		{
-			nrf24_getData(dataArray);
-		}
-		
-		sendString( "przeslane dane:  ", USART1);
-		sendString( "\n", USART1);
-		
-		for (int i = 0; i<=3 ;i++)
-		{
-			sendChar(dataArray[i],USART1);
-		
-		}
-		
-		*/
-		
-		
-		if (counter == 127)
-		{
-			counter =0;
-		}
-		
-		for(int  i = 0 ; i<= 3;  i++)
-		{
-			txdataArray[i] =  counter;
-			counter++;			
-		}
-		
-		/* reset przerwania */
-		GPIO_SetBits(NRF_PORT, NRF_IRQ);
-		
-		
-		delayMs(500);
-		
-		
-	/*	adcTest();*/
-		
-			
+		/*adcTest();*/		
 	}
 }
