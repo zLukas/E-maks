@@ -17,7 +17,11 @@ extern 	char	dataIn[];	/*received data */
 uint8_t sendstatus;
 int main(void)
 {
-
+	
+	hardware_functions.init_hardware();
+	adc_functions.adc_init();
+	interfaces_functions.spi_init();
+	interfaces_functions.uart_init();
 	
 	/*fill data to send Array */
 	snprintf(dataOut,sizeof("it works !"),"it works !");
@@ -30,8 +34,8 @@ int main(void)
 	while(1)
 	{
 		
-		delayMs(50);		
-		oledTest();
+		hardware_functions.timer_delay(50);		
+		//oledTest();
 		/*adcTest();*/		
 	}
 }
