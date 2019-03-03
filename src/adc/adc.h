@@ -8,7 +8,6 @@
 
 #include "hardware.h"
 #include <stm32f10x_adc.h>
-#include "i2c.h"
 
 #define ADC_CHANNELS  4
 
@@ -23,8 +22,11 @@
 #define ADC_MAX_2				2.8
 #define ADC_MIN_2				0.0
 
+static uint16_t adcValues[ADC_CHANNELS];
+
+
 void adcInit(void);
-void ConverToVolts(void);
+float ConverToVolts(uint16_t inputData);
 void adcTest(void);
 
 #endif

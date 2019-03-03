@@ -12,7 +12,6 @@
 	- adcValue holds raw ADC data
 	-	adcConvertedValues holds calulated voltage data
 */
-uint16_t adcValues[ADC_CHANNELS];
 float adcConvertedValues[ADC_CHANNELS];
 ADC_InitTypeDef adc;
 /* 
@@ -53,12 +52,10 @@ void adcInit(void)
 	convertToVolts
 	-function for converting raw adc int value to float voltage value
 */
-void ConverToVolts(void)
+float ConverToVolts(uint16_t inputData)
 {
-	for (int i = 0 ; i<= ADC_CHANNELS-1;i++)
-	{
-		adcConvertedValues[i]= (float)adcValues[i] *3.3/4096.0f;
-	}
+		return  (float)inputData *3.3/4096.0f;
+	
 }
 
 /*
@@ -76,7 +73,7 @@ void adcTest(void)
 /*
 		sprintf( char array, "sample text i %f %d", value to replace %f, walu to replace %d)
 */
-	ConverToVolts();
+
 	sprintf(adc1, "adc1 j1x: %.1f ",adcConvertedValues[ADC_JOY1_X]);
 	sprintf(adc2, "adc2 j1y: %.1f ", adcConvertedValues[ADC_JOY1_Y]);
 	sprintf(adc3, "adc3 j2x: %.1f ",adcConvertedValues[ADC_JOY2_X]);

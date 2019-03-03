@@ -110,11 +110,9 @@ w pliku LIB_COnfig podmieniono tylko piny
 #define SPI2_PORT				GPIOB
 
 
-void gpioInit(void);
-void dmaInit(void);
-void tim4Init(void);
-void tim2Init(void);
-void nvicInit (void);
+
+
 void delayMs(volatile int time);
+void hardwareInit(void);
 
 #endif

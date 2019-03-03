@@ -11,46 +11,47 @@
 USART_InitTypeDef uart;
 
 /* uartInit
-	-USARTx configuration 
+	-USART2 configuration 
 */
-void uartInit(USART_TypeDef *usartx )
+void uartInit(void)
 {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 	USART_StructInit(&uart);
 	uart.USART_BaudRate = 115200;
-	USART_Init(usartx, &uart);
-	USART_Cmd(usartx, ENABLE);
+	USART_Init(USART2, &uart);
+	USART_Cmd(USART2, ENABLE);
 }
 
 /* sendChar
 	 one char sending.
 	- charToSend : char to send
 */
-void sendChar(char charToSend, USART_TypeDef *usartx)
+void sendChar(char charToSend)
 {
- while (USART_GetFlagStatus(usartx, USART_FLAG_TXE) == RESET);
- USART_SendData(usartx, charToSend);
+ while (USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET);
+ USART_SendData(USART2, charToSend);
 }
  /* sendString
 		-send several chars(string) function 
 		- dataToSend: sting to send
 */
-void sendString(const char* dataToSend, USART_TypeDef *usartx)
+void sendString(const char* dataToSend)
 {
  while (*dataToSend)
- sendChar(*dataToSend++, usartx);
+ sendChar(*dataToSend++);
 }
 /* uartReceive
 	function to read from RX line.
-	- usartx: usart number UASRT2 or USART1.
+	- USART2: usart number UASRT2 or USART1.
 */
-char uartReceive(USART_TypeDef *usartx)
+//todo: creplace it with interruption
+char uartReceive(void)
 {
 	char received;
-	if (USART_GetFlagStatus(usartx, USART_FLAG_RXNE)) 
+	if (USART_GetFlagStatus(USART2, USART_FLAG_RXNE)) 
 		{
-			received = USART_ReceiveData(usartx);
+			received = USART_ReceiveData(USART2);
 		}
 	else
 		{
@@ -65,7 +66,7 @@ char uartReceive(USART_TypeDef *usartx)
 int __io_putchar(int received)
 {
 	if (received=='\n')
-		sendChar('\r',USART1);
-	sendChar(received,USART1);
+		sendChar('\r');
+	sendChar(received);
 	return received;
 }

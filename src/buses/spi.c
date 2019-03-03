@@ -61,6 +61,9 @@ uint8_t spiSendReceive(uint8_t byte)
 }
 
 
+
+
+// todo: move it to another module
 /* nrf24_ce_digitalWrite.
 	 externall library function 
 	 set chip enable state 
