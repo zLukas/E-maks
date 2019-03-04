@@ -7,9 +7,4 @@ there are 3 branches:
 application_layer branch  - holds main controlers logic without specified hardware library 
 pad_controler branch      - holds pad controler code with stdPeriph hardware library
 radio_interface branch    - holds onboard microcontroler code with HAL hardware library 
-
-there will be also 2 releases :
-
-pad_release      - source code for pad controler
-onboard_release  - source code with onboard microcontroler 
  
