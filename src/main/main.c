@@ -18,7 +18,7 @@ uint8_t sendstatus;
 int main(void)
 {
 	
-	hardware_functions.init_hardware();
+	hardware_functions.hardware_init();
 	adc_functions.adc_init();
 	interfaces_functions.spi_init();
 	interfaces_functions.uart_init();
@@ -35,7 +35,7 @@ int main(void)
 	{
 		
 		hardware_functions.timer_delay(50);		
-		//oledTest();
+		oledTest();
 		/*adcTest();*/		
 	}
 }

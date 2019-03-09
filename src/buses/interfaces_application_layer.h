@@ -9,7 +9,7 @@ typedef  struct{
 	void (*spi_init)(void);
 	uint8_t (*spi_send_receive)(uint8_t);
 	void (*uart_init)(void);
-	void (*uart_send)(char);
+	void (*uart_send)( const char*);
 	char (*uart_receive)(void);
 	void (*can_init)(void);
 	void (*can_send)(uint8_t*);
