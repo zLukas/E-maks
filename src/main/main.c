@@ -1,14 +1,5 @@
 #include "main.h"
 
-
-uint8_t dataArray[4];
-uint8_t txdataArray[4];
-uint8_t tx_address[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
-uint8_t rx_address[5] = {0xD7,0xD7,0xD7,0xD7,0xD7};
-uint8_t counter;
-extern uint8_t sendingStatus;
-
-
 extern float adcConvertedValues[];
 extern  uint8_t myAddress[];
 extern	uint8_t txAddress[];
@@ -19,14 +10,12 @@ int main(void)
 {
 	
 	hardware_functions.hardware_init();
-	adc_functions.adc_init();
-	interfaces_functions.spi_init();
-	interfaces_functions.uart_init();
+	hardware_functions.spi_init();
+	nrf24Init();
 	
+	uint8_t sendStatus;
 	/*fill data to send Array */
 	snprintf(dataOut,sizeof("it works !"),"it works !");
-	
-	sendstatus = nrf24SendData((uint8_t *)&dataOut);
 
 	ssd1306_clear_screen(0xFF);
 	ssd1306_clear_screen(0x00);
@@ -34,8 +23,12 @@ int main(void)
 	while(1)
 	{
 		
-		hardware_functions.timer_delay(50);		
-		oledTest();
-		/*adcTest();*/		
+		hardware_functions.delay_ms(50);		
+		oledTest();		
+
+		if(sendStatus != 0xFF)
+		{
+			sendStatus = nrf24Transmit((uint8_t*)&dataOut);
+		}
 	}
 }

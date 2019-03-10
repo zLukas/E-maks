@@ -4,7 +4,6 @@
 */
 
 #include "hardware.h"
-
 /*
 	peiphethial init structures
 */
@@ -19,9 +18,6 @@ EXTI_InitTypeDef exti;
 /*
 	ADC variables defined in adc.c file needed for DMA configuration
 */
-
-
-
 /* gpioInit
 	- Pinout configuration
 */
@@ -211,8 +207,8 @@ void nvicInit (void)
 */
 void delayMs(volatile int time)
 {
-	TIM2->CNT = time;
-	while(TIM2->CNT);
+	TIM1->CNT =time;
+	while(TIM1->CNT);
 }
 
 void hardwareInit(void){

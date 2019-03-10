@@ -180,8 +180,8 @@
 #define NRF24L01_NOP_MASK					0xFF
 
 /* Flush FIFOs */
-#define NRF24L01_FLUSH_TX()					do { NRF24L01_CSN_LOW(); spiSendReceive(NRF24L01_FLUSH_TX_MASK); NRF24L01_CSN_HIGH(); } while (0)
-#define NRF24L01_FLUSH_RX()					do { NRF24L01_CSN_LOW(); spiSendReceive(NRF24L01_FLUSH_RX_MASK); NRF24L01_CSN_HIGH(); } while (0)
+#define NRF24L01_FLUSH_TX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive( NRF24L01_FLUSH_TX_MASK); NRF24L01_CSN_HIGH(); } while (0)
+#define NRF24L01_FLUSH_RX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive( NRF24L01_FLUSH_RX_MASK); NRF24L01_CSN_HIGH(); } while (0)
 
 #define NRF24L01_TRANSMISSON_OK 			0
 #define NRF24L01_MESSAGE_LOST   			1
@@ -209,15 +209,27 @@ uint8_t TM_NRF24L01_RxFifoEmpty(void);
 static TM_NRF24L01_t TM_NRF24L01_Struct;
 
 void TM_NRF24L01_InitPins(void) {
-
+	/* Init pins */
+	/* CNS pin */
+	//TM_GPIO_Init(NRF24L01_CSN_PORT, NRF24L01_CSN_PIN, TM_GPIO_Mode_OUT, TM_GPIO_OType_PP, TM_GPIO_PuPd_UP, TM_GPIO_Speed_Low);
+	
+	/* CE pin */
+	//TM_GPIO_Init(NRF24L01_CE_PORT, NRF24L01_CE_PIN, TM_GPIO_Mode_OUT, TM_GPIO_OType_PP, TM_GPIO_PuPd_UP, TM_GPIO_Speed_Low);
+	
 	/* CSN high = disable SPI */
 	NRF24L01_CSN_HIGH();
 	
 	/* CE low = disable TX/RX */
 	NRF24L01_CE_LOW();
 }
-uint8_t TM_NRF24L01_Init(uint8_t channel, uint8_t payload_size) {
 
+uint8_t TM_NRF24L01_Init(uint8_t channel, uint8_t payload_size) {
+	/* Initialize CE and CSN pins */
+	TM_NRF24L01_InitPins();
+	
+	/* Initialize SPI */
+	//TM_SPI_Init( NRF24L01_SPI_PINS);
+	
 	/* Max payload is 32bytes */
 	if (payload_size > 32) {
 		payload_size = 32;
@@ -262,8 +274,8 @@ uint8_t TM_NRF24L01_Init(uint8_t channel, uint8_t payload_size) {
 	TM_NRF24L01_WriteRegister(NRF24L01_REG_DYNPD, (0 << NRF24L01_DPL_P0) | (0 << NRF24L01_DPL_P1) | (0 << NRF24L01_DPL_P2) | (0 << NRF24L01_DPL_P3) | (0 << NRF24L01_DPL_P4) | (0 << NRF24L01_DPL_P5));
 	
 	/* Clear FIFOs */
-	NRF24L01_FLUSH_TX();
-	NRF24L01_FLUSH_RX();
+	NRF24L01_FLUSH_TX;
+	NRF24L01_FLUSH_RX;
 	
 	/* Clear interrupts */
 	NRF24L01_CLEAR_INTERRUPTS;
@@ -312,8 +324,8 @@ uint8_t TM_NRF24L01_ReadBit(uint8_t reg, uint8_t bit) {
 uint8_t TM_NRF24L01_ReadRegister(uint8_t reg) {
 	uint8_t value;
 	NRF24L01_CSN_LOW();
-	spiSendReceive( NRF24L01_READ_REGISTER_MASK(reg));
-	value = spiSendReceive(NRF24L01_NOP_MASK);
+	hardware_functions.spi_send_receive( NRF24L01_READ_REGISTER_MASK(reg));
+	value = hardware_functions.spi_send_receive( NRF24L01_NOP_MASK);
 	NRF24L01_CSN_HIGH();
 	
 	return value;
@@ -321,31 +333,31 @@ uint8_t TM_NRF24L01_ReadRegister(uint8_t reg) {
 
 void TM_NRF24L01_ReadRegisterMulti(uint8_t reg, uint8_t* data, uint8_t count) {
 	NRF24L01_CSN_LOW();
-	spiSendReceive(NRF24L01_READ_REGISTER_MASK(reg));
-	
-	/*TM_SPI_ReadMulti(NRF24L01_SPI, data, NRF24L01_NOP_MASK, count);*/
-	for( uint8_t i = 0 ; i <= count ;i++)
+	hardware_functions.spi_send_receive( NRF24L01_READ_REGISTER_MASK(reg));
+	//TM_SPI_ReadMulti( data, NRF24L01_NOP_MASK, count);
+	for(uint8_t i = 0; i < count ; i++)
 	{
-		data[i] = spiSendReceive(NRF24L01_NOP_MASK);
+		data[i] = hardware_functions.spi_send_receive(NRF24L01_NOP_MASK);
 	}
 	NRF24L01_CSN_HIGH();
 }
 
 void TM_NRF24L01_WriteRegister(uint8_t reg, uint8_t value) {
 	NRF24L01_CSN_LOW();
-	spiSendReceive(NRF24L01_WRITE_REGISTER_MASK(reg));
-	spiSendReceive(value);
+	hardware_functions.spi_send_receive( NRF24L01_WRITE_REGISTER_MASK(reg));
+	hardware_functions.spi_send_receive( value);
 	NRF24L01_CSN_HIGH();
 }
 
 void TM_NRF24L01_WriteRegisterMulti(uint8_t reg, uint8_t *data, uint8_t count) {
 	NRF24L01_CSN_LOW();
-	spiSendReceive(NRF24L01_WRITE_REGISTER_MASK(reg));
-	/*TM_SPI_WriteMulti(NRF24L01_SPI, data, count);*/
-	for( uint8_t i = 0 ; i<= count ; i++)
+	hardware_functions.spi_send_receive( NRF24L01_WRITE_REGISTER_MASK(reg));
+	//TM_SPI_WriteMulti( data, count);
+	for(uint8_t  i = 0 ; i < count ; i++)
 	{
-		spiSendReceive(data[i]);
+		hardware_functions.spi_send_receive(data[i]);
 	}
+		
 	NRF24L01_CSN_HIGH();
 }
 
@@ -358,7 +370,7 @@ void TM_NRF24L01_PowerUpRx(void) {
 	/* Disable RX/TX mode */
 	NRF24L01_CE_LOW();
 	/* Clear RX buffer */
-	NRF24L01_FLUSH_RX();
+	NRF24L01_FLUSH_RX;
 	/* Clear interrupts */
 	NRF24L01_CLEAR_INTERRUPTS;
 	/* Setup RX mode */
@@ -382,17 +394,17 @@ void TM_NRF24L01_Transmit(uint8_t *data) {
 	TM_NRF24L01_PowerUpTx();
 	
 	/* Clear TX FIFO from NRF24L01+ */
-	NRF24L01_FLUSH_TX();
+	NRF24L01_FLUSH_TX;
 	
 	/* Send payload to nRF24L01+ */
 	NRF24L01_CSN_LOW();
 	/* Send write payload command */
-	spiSendReceive(NRF24L01_W_TX_PAYLOAD_MASK);
+	hardware_functions.spi_send_receive( NRF24L01_W_TX_PAYLOAD_MASK);
 	/* Fill payload with data*/
-	/*TM_SPI_WriteMulti(NRF24L01_SPI, data, count);*/
-	for( uint8_t i = 0 ; i<= count ; i++)
+	//TM_SPI_WriteMulti( data, count);
+	for(uint8_t  i = 0 ; i < count ; i++)
 	{
-		spiSendReceive(data[i]);
+		hardware_functions.spi_send_receive(data[i]);
 	}
 	/* Disable SPI */
 	NRF24L01_CSN_HIGH();
@@ -405,13 +417,13 @@ void TM_NRF24L01_GetData(uint8_t* data) {
 	/* Pull down chip select */
 	NRF24L01_CSN_LOW();
 	/* Send read payload command*/
-	spiSendReceive(NRF24L01_R_RX_PAYLOAD_MASK);
+	hardware_functions.spi_send_receive( NRF24L01_R_RX_PAYLOAD_MASK);
 	/* Read payload */
-	/*TM_SPI_SendMulti(NRF24L01_SPI, data, data, TM_NRF24L01_Struct.PayloadSize);*/
-	for( uint8_t i = 0 ; i<= TM_NRF24L01_Struct.PayloadSize ; i++)
+	for(uint8_t i = 0 ; i < TM_NRF24L01_Struct.PayloadSize; i ++)
 	{
-		data[i] = spiSendReceive(data[i]);
+	     data[i] = hardware_functions.spi_send_receive( data[i]);
 	}
+
 	/* Pull up chip select */
 	NRF24L01_CSN_HIGH();
 	
@@ -438,7 +450,7 @@ uint8_t TM_NRF24L01_GetStatus(void) {
 	
 	NRF24L01_CSN_LOW();
 	/* First received byte is always status register */
-	status = spiSendReceive(NRF24L01_NOP_MASK);
+	status = hardware_functions.spi_send_receive( NRF24L01_NOP_MASK);
 	/* Pull up chip select */
 	NRF24L01_CSN_HIGH();
 	

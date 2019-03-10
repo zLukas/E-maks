@@ -69,7 +69,7 @@ uint8_t spiSendReceive(uint8_t byte)
 	 set chip enable state 
 	 -state: 0 or 1 value
 */
-void nrf24_ce_digitalWrite(uint8_t state)
+void spi_write_nrf24_ce(uint8_t state)
 {
     if(state)
     {
@@ -85,7 +85,7 @@ void nrf24_ce_digitalWrite(uint8_t state)
 	 set chip enable state
 	 -state: 0 or 1 value
 */
-void nrf24_csn_digitalWrite(uint8_t state)
+void spi_write_nrf24_csn(uint8_t state)
 {
     if(state)
     {

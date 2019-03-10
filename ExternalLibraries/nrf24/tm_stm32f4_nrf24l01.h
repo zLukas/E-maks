@@ -116,9 +116,8 @@ IRQ			Not used	Interrupt pin. Goes low when active. Pin functionality is active,
  - TM GPIO
 @endverbatim
  */
-#include "hardware.h"
-#include "defines.h" 
-
+#include "defines.h"
+#include "application_layer.h"
 
 /**
  * @defgroup TM_NRF24L01P_Macros
@@ -127,12 +126,11 @@ IRQ			Not used	Interrupt pin. Goes low when active. Pin functionality is active,
  */
 
 
-
 /* Pins configuration */
-#define NRF24L01_CE_LOW()				GPIO_WriteBit(NRF_PORT, NRF_CE, Bit_RESET)
-#define NRF24L01_CE_HIGH()			GPIO_WriteBit(NRF_PORT, NRF_CE, Bit_SET)
-#define NRF24L01_CSN_LOW()			GPIO_WriteBit(NRF_PORT, NRF_CS, Bit_RESET)
-#define NRF24L01_CSN_HIGH()			GPIO_WriteBit(NRF_PORT, NRF_CE, Bit_SET)
+#define NRF24L01_CE_LOW()	  		hardware_functions.spi_set_ce_pin(0)
+#define NRF24L01_CE_HIGH()			hardware_functions.spi_set_ce_pin(1)
+#define NRF24L01_CSN_LOW()			hardware_functions.spi_set_csn_pin(0)
+#define NRF24L01_CSN_HIGH()			hardware_functions.spi_set_csn_pin(1)
 
 /**
  * @}

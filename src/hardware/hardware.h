@@ -22,7 +22,6 @@
 #include	"adc.h"
 #include "spi.h"
 
-
 #define DIO0						GPIO_Pin_0		
 #define DIO0_PORT				GPIOA					
 

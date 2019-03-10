@@ -7,13 +7,17 @@
 #define _spi_H_
 
 #include <stdio.h>
-#include <hardware.h>
+#include "hardware.h"
 #include <stm32f10x_spi.h>
+
+
+#define PIN_HIGH 1
+#define PIN_LOW  0
 
 
 void spiInit(void);
 uint8_t spiSendReceive(uint8_t byte);
-void nrf24_ce_digitalWrite(uint8_t state);
-void nrf24_csn_digitalWrite(uint8_t state);
+void spi_write_nrf24_ce(uint8_t state);
+void spi_write_nrf24_csn(uint8_t state);
  
 #endif
