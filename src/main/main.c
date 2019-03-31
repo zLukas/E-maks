@@ -10,7 +10,6 @@ int main(void)
 {
 	
 	hardware_functions.hardware_init();
-	hardware_functions.spi_init();
 	nrf24Init();
 	
 	uint8_t sendStatus;
