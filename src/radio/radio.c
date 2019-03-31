@@ -16,13 +16,14 @@ uint8_t TxAddress[] = {
     0x7E,
     0x7E
 };
-char dataOut[PAYLOAD_SIZE]; /* data to send */
-char	dataIn[PAYLOAD_SIZE];	/*received data */
+void send_multiple_radio_data(uint16_t* data){
+	
+}
 
 void nrf24Init(void)
 {
-		TM_NRF24L01_Init(CHANNEL, PAYLOAD_SIZE);
-		TM_NRF24L01_SetRF(TM_NRF24L01_DataRate_2M,TM_NRF24L01_OutputPower_M18dBm);
+	TM_NRF24L01_Init(CHANNEL, PAYLOAD_SIZE);
+	TM_NRF24L01_SetRF(TM_NRF24L01_DataRate_2M,TM_NRF24L01_OutputPower_M18dBm);
     TM_NRF24L01_SetMyAddress(MyAddress);
     TM_NRF24L01_SetTxAddress(TxAddress);
 	

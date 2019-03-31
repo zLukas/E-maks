@@ -45,6 +45,8 @@ extern void ssd1306_draw_bitmap(uint8_t chXpos, uint8_t chYpos, const uint8_t *p
 
 extern void ssd1306_init(void);
 
+void write_oled_lines(float* data);
+
 #endif
 
 /*-------------------------------END OF FILE-------------------------------*/

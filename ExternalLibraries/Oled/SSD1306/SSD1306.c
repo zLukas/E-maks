@@ -66,6 +66,33 @@ static uint8_t s_chDispalyBuffer[128][8];
   *                           1: Writes to the display data ram
   * @retval None
 **/
+								
+void write_oled_lines(float* data){
+	char kartSpeed[20];
+	char kartBattery[20];
+	char wheelsAngle[20];
+	char rcBattery[20];
+	
+	/*
+		sprintf( char array, "sample text i %f %d", value to replace %f, walu to replace %d)
+	*/
+	sprintf(kartSpeed, "v kart: %.1f km/h",data[0]);
+	sprintf(kartBattery, "bat.kart: %.1f %%", data[1]);
+	sprintf(wheelsAngle, "skret kol: %.1f *",data[2]);
+	sprintf(rcBattery, "bat.RC: %.1f %%",data[3]);
+/*
+	ssd1306_display_string(Xpos,Ypos, (uint8_t)pointer on char wtih data to show, Font?, dont't know what does this argument but wit "0" not working);
+*/		
+	ssd1306_display_string(2, 0, (uint8_t *)kartSpeed , 14, 1);
+	ssd1306_display_string(2, 16,(uint8_t *)kartBattery , 14, 1);
+	ssd1306_display_string(2, 32,(uint8_t *)wheelsAngle  , 14, 1);
+	ssd1306_display_string(2, 48,(uint8_t *)rcBattery , 14, 1);
+	ssd1306_refresh_gram();
+	
+
+}	
+								
+								
 static void ssd1306_write_byte(uint8_t chData, uint8_t chCmd) 
 {
 

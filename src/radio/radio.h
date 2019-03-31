@@ -11,5 +11,6 @@ static char	dataIn[PAYLOAD_SIZE];	/*received data */
 
 void nrf24Init(void);
 uint8_t nrf24Transmit(uint8_t* data);
+void nrf24Receive(uint8_t* data);
 
 #endif

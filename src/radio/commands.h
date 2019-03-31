@@ -1,13 +1,12 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-#include <misc.h>
+#include "application_layer.h"
 
 typedef struct {
-	uint8_t frame_data[8];
+	uint8_t command;
+	uint8_t* data;
 	uint8_t	id;
 } radio_frame;
-
-
 
 #endif 

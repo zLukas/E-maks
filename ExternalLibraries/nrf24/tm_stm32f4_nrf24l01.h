@@ -132,6 +132,11 @@ IRQ			Not used	Interrupt pin. Goes low when active. Pin functionality is active,
 #define NRF24L01_CSN_LOW()			hardware_functions.spi_set_csn_pin(0)
 #define NRF24L01_CSN_HIGH()			hardware_functions.spi_set_csn_pin(1)
 
+
+#define BIT_RESET   0
+#define BIT_SET			1
+
+
 /**
  * @}
  */
