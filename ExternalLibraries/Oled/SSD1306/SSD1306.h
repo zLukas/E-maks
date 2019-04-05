@@ -22,8 +22,12 @@
 #ifndef _SSD1306_H_
 #define _SSD1306_H_
 
+#define OLED_ADDRESS						0x78
+#define COMMAND_MEMORY_ADDRESS	0x40
+#define DATA_MEMORY_ADDRESS			0x00
+
 /* Includes ------------------------------------------------------------------*/
-#include "MacroAndConst.h"
+#include "hal_init.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

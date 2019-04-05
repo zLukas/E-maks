@@ -1,9 +1,6 @@
 #ifndef _OLEDMAIN_H_
 #define _OLEDMAIN_H_
-
-#include "LIB_Config.h" 
-
-
+#include "SSD1306.h"
 
 void oledSample (void);
 

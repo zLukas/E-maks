@@ -5,6 +5,7 @@
 #include <string.h>
 #include "application_layer.h"
 #include "radio.h"
+#include "oled.h"
 
 int main(void);
 

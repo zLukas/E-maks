@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\main;.\src\radio;.\ExternalLibraries\Oled\delay;.\ExternalLibraries\Oled\IIC;.\ExternalLibraries\Oled\SPI;.\ExternalLibraries\Oled\SSD1306;.\ExternalLibraries\Oled\usher;.\ExternalLibraries\nrf24;.\Drivers\HAL\Radio_controler\Core\Inc;.\Drivers\HAL\Radio_controler\Drivers\STM32F1xx_HAL_Driver\Inc;.\Drivers\HAL\Radio_controler\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;.\Drivers\HAL\Radio_controler\Drivers\CMSIS\Device\ST\STM32F1xx\Include;.\Drivers\HAL\Radio_controler\Drivers\CMSIS\Include</IncludePath>
+              <IncludePath>.\src\main;.\src\radio;.\ExternalLibraries\Oled\IIC;.\ExternalLibraries\Oled\SSD1306;.\ExternalLibraries\nrf24;.\Drivers\HAL\Radio_controler\Core\Inc;.\Drivers\HAL\Radio_controler\Drivers\STM32F1xx_HAL_Driver\Inc;.\Drivers\HAL\Radio_controler\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;.\Drivers\HAL\Radio_controler\Drivers\CMSIS\Device\ST\STM32F1xx\Include;.\Drivers\HAL\Radio_controler\Drivers\CMSIS\Include;.\src\oled</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -409,16 +409,6 @@
               <FileName>radio.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\radio\radio.h</FilePath>
-            </File>
-            <File>
-              <FileName>tm_stm32f4_nrf24l01.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ExternalLibraries\nrf24\tm_stm32f4_nrf24l01.c</FilePath>
-            </File>
-            <File>
-              <FileName>tm_stm32f4_nrf24l01.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\ExternalLibraries\nrf24\tm_stm32f4_nrf24l01.h</FilePath>
             </File>
             <File>
               <FileName>commands.h</FileName>
@@ -743,7 +733,69 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>::CMSIS</GroupName>
+          <GroupName>OLED</GroupName>
+          <Files>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\oled\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\oled\oled.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SSD1306</GroupName>
+          <Files>
+            <File>
+              <FileName>Fonts.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternalLibraries\Oled\SSD1306\Fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>Fonts.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ExternalLibraries\Oled\SSD1306\Fonts.h</FilePath>
+            </File>
+            <File>
+              <FileName>SSD1306.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternalLibraries\Oled\SSD1306\SSD1306.c</FilePath>
+            </File>
+            <File>
+              <FileName>SSD1306.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ExternalLibraries\Oled\SSD1306\SSD1306.h</FilePath>
+            </File>
+            <File>
+              <FileName>oledMain.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternalLibraries\Oled\usher\oledMain.c</FilePath>
+            </File>
+            <File>
+              <FileName>oledMain.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ExternalLibraries\Oled\usher\oledMain.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>nrf24L01+</GroupName>
+          <Files>
+            <File>
+              <FileName>tm_stm32f4_nrf24l01.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ExternalLibraries\nrf24\tm_stm32f4_nrf24l01.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_nrf24l01.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ExternalLibraries\nrf24\tm_stm32f4_nrf24l01.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -751,14 +803,7 @@
 
   <RTE>
     <apis/>
-    <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.1.1" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.3.0"/>
-        <targetInfos>
-          <targetInfo name="STM32F103RC"/>
-        </targetInfos>
-      </component>
-    </components>
+    <components/>
     <files/>
   </RTE>
 

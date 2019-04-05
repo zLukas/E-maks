@@ -19,10 +19,10 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "LIB_Config.h"
+
 #include "SSD1306.h"
 #include "Fonts.h"
-
+#include "application_layer.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define SSD1306_CMD    0
@@ -35,7 +35,6 @@
 /* Private macro -------------------------------------------------------------*/
 
 #if !defined(SH1106) && !defined(SSD1306)
-	#warning Please select first the target OLED device(SH1106 or SSD1306) in your application!
 	#define SSD1306  //define SSD1306 by default	
 #endif
 
@@ -43,12 +42,12 @@
 #define __SET_COL_START_ADDR() 	do { \
 									ssd1306_write_byte(0x00, SSD1306_CMD); \
 									ssd1306_write_byte(0x10, SSD1306_CMD); \
-								} while(false)
+								} while(0)
 #elif defined(SH1106)
 #define __SET_COL_START_ADDR() 	do { \
 									ssd1306_write_byte(0x02, SSD1306_CMD); \
 									ssd1306_write_byte(0x10, SSD1306_CMD); \
-								} while(false)
+								} while(0)
 #endif								
 /* Private variables ---------------------------------------------------------*/
 static uint8_t s_chDispalyBuffer[128][8];
@@ -67,36 +66,20 @@ static uint8_t s_chDispalyBuffer[128][8];
   * @retval None
 **/
 								
-void write_oled_lines(float* data){
-	char kartSpeed[20];
-	char kartBattery[20];
-	char wheelsAngle[20];
-	char rcBattery[20];
-	
-	/*
-		sprintf( char array, "sample text i %f %d", value to replace %f, walu to replace %d)
-	*/
-	sprintf(kartSpeed, "v kart: %.1f km/h",data[0]);
-	sprintf(kartBattery, "bat.kart: %.1f %%", data[1]);
-	sprintf(wheelsAngle, "skret kol: %.1f *",data[2]);
-	sprintf(rcBattery, "bat.RC: %.1f %%",data[3]);
-/*
-	ssd1306_display_string(Xpos,Ypos, (uint8_t)pointer on char wtih data to show, Font?, dont't know what does this argument but wit "0" not working);
-*/		
-	ssd1306_display_string(2, 0, (uint8_t *)kartSpeed , 14, 1);
-	ssd1306_display_string(2, 16,(uint8_t *)kartBattery , 14, 1);
-	ssd1306_display_string(2, 32,(uint8_t *)wheelsAngle  , 14, 1);
-	ssd1306_display_string(2, 48,(uint8_t *)rcBattery , 14, 1);
-	ssd1306_refresh_gram();
-	
 
-}	
 								
 								
 static void ssd1306_write_byte(uint8_t chData, uint8_t chCmd) 
 {
-
-	
+	if( chCmd) 
+	{
+		hardware_functions.i2c_send(OLED_ADDRESS, COMMAND_MEMORY_ADDRESS, &chData);
+	}
+	else
+	{
+		hardware_functions.i2c_send(OLED_ADDRESS, DATA_MEMORY_ADDRESS, &chData);
+	}
+/*
 	iic_start();
 	iic_write_byte(0x78);
 	iic_wait_for_ack();
@@ -111,7 +94,7 @@ static void ssd1306_write_byte(uint8_t chData, uint8_t chCmd)
 	iic_wait_for_ack();
 	
 	iic_stop();
-	
+*/
 }   	  
 
 /**

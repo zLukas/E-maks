@@ -180,8 +180,8 @@
 #define NRF24L01_NOP_MASK					0xFF
 
 /* Flush FIFOs */
-#define NRF24L01_FLUSH_TX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive( NRF24L01_FLUSH_TX_MASK); NRF24L01_CSN_HIGH(); } while (0)
-#define NRF24L01_FLUSH_RX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive( NRF24L01_FLUSH_RX_MASK); NRF24L01_CSN_HIGH(); } while (0)
+#define NRF24L01_FLUSH_TX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive((uint8_t) NRF24L01_FLUSH_TX_MASK); NRF24L01_CSN_HIGH(); } while (0)
+#define NRF24L01_FLUSH_RX					do { NRF24L01_CSN_LOW(); hardware_functions.spi_send_receive((uint8_t) NRF24L01_FLUSH_RX_MASK); NRF24L01_CSN_HIGH(); } while (0)
 
 #define NRF24L01_TRANSMISSON_OK 			0
 #define NRF24L01_MESSAGE_LOST   			1
